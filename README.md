@@ -8,3 +8,4 @@
 * Kristen 'Most Current' Mills 
 * Anshul Kapoor
 * Lee Avital
+* Ethan Jurman
