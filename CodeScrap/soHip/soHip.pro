@@ -1,3 +1,6 @@
 QT			+= opengl widgets
-HEADERS 	+= helper.h
-SOURCES		+= helper.cpp
+HEADERS 	+=  window.h \
+                    hipWidget.h
+SOURCES		+=  window.cpp \
+                    main.cpp \
+                    hipWidget.cpp
