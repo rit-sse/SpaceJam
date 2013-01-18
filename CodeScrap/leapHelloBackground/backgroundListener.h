@@ -3,11 +3,11 @@
 
 class GLWidget;
 
-class ScrollListener : public Leap::Listener
+class BackgroundListener : public Leap::Listener
 {
 public:
 
-    ScrollListener(Window* window);
+    BackgroundListener(Window* window);
 
     virtual void onInit(const Leap::Controller&);
 

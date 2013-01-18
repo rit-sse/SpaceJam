@@ -1,15 +1,12 @@
-VPATH += ../shared
-INCLUDEPATH += ../shared
-
 HEADERS       = glwidget.h \
                 window.h \
                 qtlogo.h \
-                scrollListener.h
+                backgroundListener.h
 SOURCES       = glwidget.cpp \
                 main.cpp \
                 window.cpp \
                 qtlogo.cpp \
-                scrollListener.cpp
+                backgroundListener.cpp
 QT           += opengl widgets
 
 # install

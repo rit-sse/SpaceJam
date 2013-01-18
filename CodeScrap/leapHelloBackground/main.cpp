@@ -41,7 +41,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-#include "scrollListener.h"
+#include "backgroundListener.h"
 using namespace Leap;
 
 int main(int argc, char *argv[])
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     int widgetArea = window.width() * window.height();
     // Create a sample listener and controller
     Controller controller;
-    ScrollListener listener(&window);
+    BackgroundListener listener(&window);
 
     // Have the sample listener receive events from the controller
     controller.addListener(listener);
