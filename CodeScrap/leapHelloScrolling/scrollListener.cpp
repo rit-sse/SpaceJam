@@ -24,19 +24,13 @@ void ScrollListener::onExit(const Controller& controller) {
 
 void ScrollListener::onFrame(const Controller& controller) {
     const Frame frame = controller.frame();
-//    std::cout << "Frame id: " << frame.id()
-//            << ", timestamp: " << frame.timestamp()
-//            << ", hands: " << frame.hands().count()
-//            << ", fingers: " << frame.fingers().count()
-//            << ", tools: " << frame.tools().count() << std::endl;
     if(!frame.hands().empty()){
         const Hand hand = frame.hands()[0];
-        const FingerList fingers = hand.fingers();
-        float pitch = hand.direction().pitch()*RAD_TO_DEG + 180;
-//        float roll = hand.palmNormal().roll()*RAD_TO_DEG + 180;
-//        float yaw = hand.direction().yaw()*RAD_TO_DEG + 180;
-        emit window->getXSlider()->valueChanged(pitch*16);
-//        emit window->getYSlider()->valueChanged(roll*16);
+        float pitch = hand.direction().pitch()*RAD_TO_DEG;
+//        float roll = hand.palmNormal().roll()*RAD_TO_DEG;
+//        float yaw = hand.palmNormal().yaw()*RAD_TO_DEG + 180;
+        emit window->getXSlider()->valueChanged(pitch*52);
+//        emit window->getYSlider()->valueChanged(roll*52);
 //        emit window->getZSlider()->valueChanged(yaw*16);
     }
 

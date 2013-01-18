@@ -125,12 +125,6 @@ void GLWidget::setZRotation(int angle)
     }
 }
 
-void GLWidget::setBackgroundColor(QColor color)
-{
-    qglClearColor(color.dark());
-    updateGL();
-}
-
 //! [6]
 void GLWidget::initializeGL()
 {
