@@ -1,10 +1,11 @@
-#include <iostream> 
+#include <iostream>
 #include "scrollListener.h"
 #include "QPalette"
 using namespace Leap;
 
-ScrollListener::ScrollListener(Window* window) : _window(window), _fingerThere(false), Listener(){
-    _qtGreen = QColor::fromCmykF(0.40, 0.0, 1.0, 0.0);
+ScrollListener::ScrollListener(Window* window) : window(window), fingerThere(false), isPurple(true), Listener(){
+    purple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
+    red = Qt::red;
 }
 
 void ScrollListener::onInit(const Controller& controller) {
@@ -30,17 +31,17 @@ void ScrollListener::onFrame(const Controller& controller) {
             << ", hands: " << frame.hands().count()
             << ", fingers: " << frame.fingers().count()
             << ", tools: " << frame.tools().count() << std::endl;
-	// if(!frame.hands().empty()){
-	// 	const Hand hand = frame.hands()[0];
-	// 	const FingerList fingers = hand.fingers();
-	// 	if(!fingers.empty()){
-   //          QPalette p;
-			// p.setColor(QPalette::Background, Qt::red);
-			// _window->glWidget->setAutoFillBackground(true);
-			// _window->glWidget->setPalette(p);
-             _window->glWidget->qglClearColor(_qtGreen);
-            std::cout << "change color" << std::endl;
-			_fingerThere = true;
-		// }
-	// }
+    if(!frame.hands().empty()){
+        const Hand hand = frame.hands()[0];
+        const FingerList fingers = hand.fingers();
+        if(!fingers.empty()){
+            if(isPurple){
+                emit window->backgroundColorChanged(red);
+                isPurple = false;
+            }else{
+                emit window->backgroundColorChanged(purple);
+                isPurple = true;
+            }
+        }
+    }
 }

@@ -7,7 +7,7 @@ class ScrollListener : public Leap::Listener
 {
 public:
 
-	ScrollListener(Window* window);
+    ScrollListener(Window* window);
 
     virtual void onInit(const Leap::Controller&);
 
@@ -20,8 +20,9 @@ public:
     virtual void onFrame(const Leap::Controller&);
 
 private:
-	Window* _window;
-	QColor _qtGreen;
-	bool _fingerThere;
-    GLWidget *glWidget;
+    Window* window;
+    QColor red;
+    QColor purple;
+    bool isPurple;
+    bool fingerThere;
 };

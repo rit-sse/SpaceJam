@@ -53,7 +53,6 @@ Window::Window()
     xSlider = createSlider();
     ySlider = createSlider();
     zSlider = createSlider();
-    backgroundColor = true;
 
     connect(xSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(setXRotation(int)));
     connect(glWidget, SIGNAL(xRotationChanged(int)), xSlider, SLOT(setValue(int)));
@@ -61,8 +60,7 @@ Window::Window()
     connect(glWidget, SIGNAL(yRotationChanged(int)), ySlider, SLOT(setValue(int)));
     connect(zSlider, SIGNAL(valueChanged(int)), glWidget, SLOT(setZRotation(int)));
     connect(glWidget, SIGNAL(zRotationChanged(int)), zSlider, SLOT(setValue(int)));
-    connect(backgroundColor, SIGNAL(valueChanged(bool)), glWidget, SLOT(setBackgroundColor(bool)));
-    connect(glWidget, SIGNAL(backgroundColorChanged(bool)), backgroundColor, SLOT(setValue(bool)));
+    connect(this, SIGNAL(backgroundColorChanged(QColor)), glWidget, SLOT(setBackgroundColor(QColor)));
 //! [0]
 
 //! [1]

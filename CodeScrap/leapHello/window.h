@@ -56,7 +56,10 @@ class Window : public QWidget
 
 public:
     Window();
-    GLWidget *glWidget;
+
+
+signals:
+    void backgroundColorChanged(QColor);
 
 
 protected:
@@ -69,7 +72,7 @@ private:
     QSlider *ySlider;
     QSlider *zSlider;
 
-    bool backgroundColor;
+    GLWidget *glWidget;
 };
 //! [0]
 

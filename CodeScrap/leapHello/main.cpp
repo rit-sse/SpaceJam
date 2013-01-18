@@ -54,9 +54,10 @@ int main(int argc, char *argv[])
     int widgetArea = window.width() * window.height();
     // Create a sample listener and controller
     Controller controller;
+    ScrollListener listener(&window);
 
     // Have the sample listener receive events from the controller
-    controller.addListener(*window.glWidget);
+    controller.addListener(listener);
     if (((float)widgetArea / (float)desktopArea) < 0.75f)
         window.show();
     else

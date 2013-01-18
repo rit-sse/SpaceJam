@@ -57,7 +57,8 @@ public:
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
-    
+    void change();
+
 //! [0]
 
 //! [1]
@@ -65,13 +66,12 @@ public slots:
     void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
-    void setBackgroundColor(QColor green);
+    void setBackgroundColor(QColor color);
 
 signals:
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
     void zRotationChanged(int angle);
-    void backgroundColorChanged(QColor color);
 //! [1]
 
 //! [2]
