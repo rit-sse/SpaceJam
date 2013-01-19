@@ -6,7 +6,6 @@
 #include <QPen>
 #include <QGLWidget>
 
-
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QPaintEvent;
@@ -16,9 +15,14 @@ QT_END_NAMESPACE
 class HipWidget : QGLWidget
 {
 	Q_OBJECT
+    enum CurrentMode{HIP, CURRENT, DARK};
+    const static int MAX_FONT = 50;
 public: 
 	HipWidget( QWidget *parent);
     void paint(QPainter *painter, QPaintEvent *event);
+
+public slots:
+	void animate();
 
 protected:
 	void paintEvent(QPaintEvent *event);
@@ -30,6 +34,9 @@ private:
 	QPen darkPen;
 	QPen currentPen;
 	int elapsed;
+	float curFontSize;
+	CurrentMode currentMode;
+    QString text;
 };
 
 #endif
