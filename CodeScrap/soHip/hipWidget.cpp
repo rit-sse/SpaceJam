@@ -2,7 +2,7 @@
 #include "hipWidget.h"
 
 
-HipWidget::HipWidget( QWidget *parent)
+HipWidget::HipWidget( QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
 	background = QBrush(Qt::red);
 	hipPen = QPen(Qt::green);
@@ -11,30 +11,34 @@ HipWidget::HipWidget( QWidget *parent)
 	curFontSize = MAX_FONT;
 	elapsed = 0;
     currentMode = HIP;
+    setFixedSize(200, 200);
 }
 
 void HipWidget::paint(QPainter *painter, QPaintEvent *event)
 {
 	painter->fillRect(event->rect(), background);
-	painter->save();
+    QString text;
+    QPen pen;
+    painter->save();
 	switch(currentMode){
 		case HIP:
-			painter->setPen(hipPen);
+            pen = hipPen;
 			text = "So Hip!";
 			break;
 		case CURRENT:
-			painter->setPen(currentPen);
+            pen = currentPen;
 			text = "So Current!";
 			break;
 		case DARK:
-			painter->setPen(darkPen);
+            pen = darkPen;
 			text = "So Dark!";
 			break;
 	}
-    textFont.setPixelSize(MAX_FONT - elapsed*2.5);
+    textFont.setPixelSize(MAX_FONT - elapsed);
     painter->restore();
+    painter->setPen(pen);
 	painter->setFont(textFont);
-	painter->drawText(QRect(-50, -50, 100, 100), Qt::AlignCenter, text);
+    painter->drawText(QRect(0, 0, 200, 200), Qt::AlignCenter, text);
 
 }
 
@@ -49,6 +53,23 @@ void HipWidget::paintEvent(QPaintEvent *event)
 
 void HipWidget::animate()
 {
-	elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 50;
+    elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 50;
+    if(elapsed == 0){
+        switchMode();
+    }
 	repaint();
+}
+
+void HipWidget::switchMode(){
+    switch(currentMode){
+    case HIP:
+        currentMode = CURRENT;
+        break;
+    case CURRENT:
+        currentMode = DARK;
+        break;
+    case DARK:
+        currentMode = HIP;
+        break;
+    }
 }

@@ -12,7 +12,7 @@ class QPaintEvent;
 class QWidget;
 QT_END_NAMESPACE
 
-class HipWidget : QGLWidget
+class HipWidget : public QGLWidget
 {
 	Q_OBJECT
     enum CurrentMode{HIP, CURRENT, DARK};
@@ -26,6 +26,7 @@ public slots:
 
 protected:
 	void paintEvent(QPaintEvent *event);
+    void switchMode();
 
 private: 
 	QBrush background;
