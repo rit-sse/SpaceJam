@@ -8,6 +8,7 @@ BoxWidget::BoxWidget( QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers)
 	hipPen = QPen(Qt::white);
 	elapsed = 0;
     setFixedSize(200, 200);
+	//fill = QColor(255, 255, 255);
 }
 
 void BoxWidget::paint(QPainter *painter, QPaintEvent *event)
@@ -17,6 +18,7 @@ void BoxWidget::paint(QPainter *painter, QPaintEvent *event)
     painter->save();
 	painter->restore();
     painter->setPen(pen);
+	//painter->setBrush(QBrush(fill));
 	painter->drawRoundedRect(QRect(50, 50, 100, 100), 0, 0);
 
 }

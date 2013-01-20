@@ -30,6 +30,7 @@ protected:
 
 private: 
 	QBrush background;
+	//QColor fill; //GENERATES A HEAP ERROR!
 	QFont textFont;
 	QPen hipPen;
 	QPen darkPen;
