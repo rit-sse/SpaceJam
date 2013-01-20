@@ -4,6 +4,7 @@
 This is all of our sample "Let's learn QT" stuff. Check it out!
 
 ##Included
+* BodaciousBox - An interactive box! //Currently in progress
 * soHip - So hip, so current.
 * leapHelloBackground - A copy of the example, hellogl, but uses the leap to change the background color.
 * leapHelloScrolling- A copy of the example, hellogl, but uses the leap to control the scroll bars using hand rotation.
