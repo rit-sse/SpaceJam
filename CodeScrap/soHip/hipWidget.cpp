@@ -51,8 +51,11 @@ void HipWidget::paintEvent(QPaintEvent *event)
 	painter.end();
 }
 
+
+// this is called every second because it has been linked to the timeout
 void HipWidget::animate()
 {
+    // basically run repaint method; basically
     elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 50;
     if(elapsed == 0){
         switchMode();
