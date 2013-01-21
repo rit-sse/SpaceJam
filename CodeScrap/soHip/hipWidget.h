@@ -15,7 +15,7 @@ QT_END_NAMESPACE
 class HipWidget : public QGLWidget
 {
 	Q_OBJECT
-    enum CurrentMode{HIP, CURRENT, DARK};
+    enum CurrentMode{HIP, CURRENT, APHOTIC};
     const static int MAX_FONT = 50;
 public: 
 	HipWidget( QWidget *parent);
@@ -32,7 +32,7 @@ private:
 	QBrush background;
 	QFont textFont;
 	QPen hipPen;
-	QPen darkPen;
+	QPen aphoticPen;
 	QPen currentPen;
 	int elapsed;
 	float curFontSize;
