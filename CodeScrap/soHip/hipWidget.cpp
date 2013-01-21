@@ -4,10 +4,10 @@
 
 HipWidget::HipWidget( QWidget *parent) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
-	background = QBrush(Qt::red);
+    background = QBrush(Qt::blue);
 	hipPen = QPen(Qt::green);
 	currentPen = QPen(Qt::yellow);
-	darkPen = QPen(Qt::black);
+    aphoticPen = QPen(Qt::white);
 	curFontSize = MAX_FONT;
 	elapsed = 0;
     currentMode = HIP;
@@ -29,9 +29,9 @@ void HipWidget::paint(QPainter *painter, QPaintEvent *event)
             pen = currentPen;
 			text = "So Current!";
 			break;
-		case DARK:
-            pen = darkPen;
-			text = "So Dark!";
+        case APHOTIC:
+            pen = aphoticPen;
+            text = "So Aphotic!";
 			break;
 	}
     textFont.setPixelSize(MAX_FONT - elapsed);
@@ -66,9 +66,9 @@ void HipWidget::switchMode(){
         currentMode = CURRENT;
         break;
     case CURRENT:
-        currentMode = DARK;
+        currentMode = APHOTIC;
         break;
-    case DARK:
+    case APHOTIC:
         currentMode = HIP;
         break;
     }
