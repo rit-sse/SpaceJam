@@ -55,7 +55,9 @@ void HipWidget::paintEvent(QPaintEvent *event)
 // this is called every second because it has been linked to the timeout
 void HipWidget::animate()
 {
-    // basically run repaint method; basically
+
+    // qobject_cast is a safer cast
+    // interval() will get the interval of the QTimer (in this case one)
     elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 50;
     if(elapsed == 0){
         switchMode();
