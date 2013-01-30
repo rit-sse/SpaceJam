@@ -47,6 +47,7 @@
 #include <QtGui/QPainter>
 
 //! [1]
+//Default constructor with default populated values
 OpenGLWindow::OpenGLWindow(QWindow *parent)
     : QWindow(parent)
     , m_update_pending(false)
@@ -54,18 +55,19 @@ OpenGLWindow::OpenGLWindow(QWindow *parent)
     , m_context(0)
     , m_device(0)
 {
+    //Stating that render will take place in openGL
     setSurfaceType(QWindow::OpenGLSurface);
 }
 //! [1]
 
-OpenGLWindow::~OpenGLWindow()
+OpenGLWindow::~OpenGLWindow()//destructor
 {
     delete m_device;
 }
 //! [2]
 void OpenGLWindow::render(QPainter *painter)
 {
-    Q_UNUSED(painter);
+    Q_UNUSED(painter);//Not using painter, using openGL, dont complain ;)
 }
 
 void OpenGLWindow::initialize()
@@ -75,18 +77,20 @@ void OpenGLWindow::initialize()
 void OpenGLWindow::render()
 {
     if (!m_device)
-        m_device = new QOpenGLPaintDevice;
+        m_device = new QOpenGLPaintDevice;//set a new paint device if one does not exist.
 
+    //openGl method to clear current buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-    m_device->setSize(size());
+    m_device->setSize(size());//size of the window = size of device
 
     QPainter painter(m_device);
-    render(&painter);
+    render(&painter);//refrence to QPainter object painter
 }
 //! [2]
 
 //! [3]
+//adds an update request to the event queue
 void OpenGLWindow::renderLater()
 {
     if (!m_update_pending) {
@@ -94,7 +98,7 @@ void OpenGLWindow::renderLater()
         QCoreApplication::postEvent(this, new QEvent(QEvent::UpdateRequest));
     }
 }
-
+//if theres a called event, does whats required of the specific event.
 bool OpenGLWindow::event(QEvent *event)
 {
     switch (event->type()) {
@@ -106,6 +110,7 @@ bool OpenGLWindow::event(QEvent *event)
     }
 }
 
+//renders the object if the window is exposed
 void OpenGLWindow::exposeEvent(QExposeEvent *event)
 {
     Q_UNUSED(event);
@@ -113,7 +118,7 @@ void OpenGLWindow::exposeEvent(QExposeEvent *event)
     if (isExposed())
         renderNow();
 }
-
+//re-renders the object on window resize
 void OpenGLWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
@@ -124,8 +129,10 @@ void OpenGLWindow::resizeEvent(QResizeEvent *event)
 //! [3]
 
 //! [4]
+
 void OpenGLWindow::renderNow()
 {
+    //Do nothing if the window isnt exposed.
     if (!isExposed())
         return;
 
@@ -134,6 +141,7 @@ void OpenGLWindow::renderNow()
     bool needsInitialize = false;
 
     if (!m_context) {
+        //if no context, generate a new context and set a format
         m_context = new QOpenGLContext(this);
         m_context->setFormat(requestedFormat());
         m_context->create();
@@ -142,14 +150,16 @@ void OpenGLWindow::renderNow()
     }
 
     m_context->makeCurrent(this);
-
+    //initializes the newly created context
     if (needsInitialize) {
         initializeOpenGLFunctions();
         initialize();
     }
-
+    //renders the openGL object
     render();
 
+    //Swaps back and front buffers of the surface
+    //increases speed of rendering(double buffered)
     m_context->swapBuffers(this);
 
     if (m_animating)
