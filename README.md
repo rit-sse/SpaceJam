@@ -4,6 +4,7 @@
 
 ##Collaborators:
 * Jesse Jurman
+* Michael Timbrook
 * Lord Justin Peterson
 * Kristen 'Most Current' Mills 
 * Anshul Kapoor
