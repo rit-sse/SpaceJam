@@ -29,6 +29,39 @@ enum CommandFlag : ubyte {
     PAYLOAD_END_DATA            = 0x03
 }
 
+enum Command : ushort {
+    VERSION_STRING              = 0x0100,
+    CURRENT_DISPLAY_MODE        = 0x0101,
+    CURRENT_TEST_PATTERN        = 0x0103,
+    LED_CURRENT_SETTING         = 0x0104,
+    STATIC_IMAGE                = 0x0105,
+    STATIC_COLOR                = 0x0106,
+    DISPLAY_SETTING             = 0x0107,
+
+    VIDEO_INPUT_SETTING         = 0x0200,
+    VIDEO_MODE_SETTING          = 0x0201,
+
+    PATTERN_SEQUENCE_SETTING    = 0x0400,
+    PATTERN_DEFINITION          = 0x0401,
+    START_PATTERN_SEQUENCE      = 0x0402,
+    ADVANCE_PATTERN_SEQUENCE    = 0x0403,
+    TRIGGER_OUTPUT_SETTING      = 0x0404,
+    DISPLAY_PATTERN             = 0x0405,
+    EX_PATTERN_SEQUENCE_SETTING = 0x0480,
+    EX_PATTERN_DEFINITION       = 0x0481,
+
+    CAMERA_CAPTURE              = 0x0500,
+
+    SAVE_READ_SOLUTION          = 0x0600,
+    MANAGE_SOLUTION             = 0x0601,
+
+    INSTALLATION_FILE           = 0x0700,
+
+    SET_IP_ADDRESS              = 0x0800,
+
+    DLPC300_REGISTER            = 0xff00
+}
+
 enum DisplayMode : ubyte {
     STATIC_IMAGE                = 0x00,
     INTERNAL_TEST_PATTERN       = 0x01,
@@ -62,7 +95,7 @@ struct PatternSequenceSetting {
 
 struct Packet {
     PacketType packetType;
-    ubyte[2] command;
+    ushort command;
     ubyte flags;
     ushort payloadLength;
     ubyte[] payload;
