@@ -39,6 +39,13 @@ class Lightcrafter {
     }
 
     /**
+	 * Set the display mode of the lightcrafter to the
+	 * given mode
+	 */
+	void setDisplayMode(DisplayMode mode){
+	}
+
+    /**
 	 * send an image file to the buffer
 	 * @param imageFileName the name of the image file (or 
 	 *  absolute path)
