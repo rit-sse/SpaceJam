@@ -1,4 +1,3 @@
-
 import std.stdio;
 import std.socket;
 
@@ -6,6 +5,7 @@ import lightcrafter;
 
 
 class Lightcrafter {
+   
 
     private Socket socket;
 
