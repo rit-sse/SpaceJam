@@ -41,8 +41,18 @@ class Lightcrafter {
     /**
 	 * Set the display mode of the lightcrafter to the
 	 * given mode
+     * @see section 3.5 in the lightcrafter document
+	 *
 	 */
 	void setDisplayMode(DisplayMode mode){
+		 Packet p;
+		 p.packetType = PacketType.WRITE_COMMAND;
+		 p.command = Command.CURRENT_DISPLAY_MODE;
+		 p.flags = CommandFlag.PAYLOAD_COMPLETE_DATA;
+		 
+		 p.payload = [ mode ];;
+		 sendPacket( p  );
+		  
 	}
 
     /**
@@ -113,6 +123,5 @@ void main() {
    
 
     lightcrafter.setImageMode( );
-	lightcrafter.sendImageToBuffer( cast(char[])"sample.bmp" );
 	writefln("done");
 }
