@@ -1,8 +1,8 @@
-
 import std.stdio;
 import std.socket;
 
 import lightcrafter;
+import std.file;
 
 
 class Lightcrafter {
@@ -16,7 +16,13 @@ class Lightcrafter {
     ~this() {
         socket.close();
     }
-
+	  
+    /**
+	 * set the color of the LightCrafter to the given rgb color value
+	 * @param r the red component
+	 * @param g the green component
+	 * @param b the blue component 
+	 */
     void setSolidColor(ubyte r, ubyte g, ubyte b) {
         Packet packet;
         packet.packetType = PacketType.WRITE_COMMAND;
@@ -32,6 +38,31 @@ class Lightcrafter {
         sendPacket(packet);
     }
 
+    /**
+	 * send an image file to the buffer
+	 * @param imageFileName the name of the image file (or 
+	 *  absolute path)
+	 */
+	static void sendImageToBuffer(char[] imageFileName){
+	    
+		// this doesn't take into account maxiumum size, but since
+		// we're only expecting one bit images, we can safely(?) 
+		// ignore it
+		
+	    // TODO make sure the file exists before attempting a read
+		ubyte[] contents = cast(ubyte[])read( imageFileName );
+	    //contents = contents.reverse;   // should we be reversing the payload?
+		
+		Packet packet;
+		packet.packetType = PacketType.WRITE_COMMAND;
+	    packet.command =  Command.STATIC_IMAGE;
+		packet.payload = contents;
+	    packet.payloadLength = cast(ushort)contents.length; // same issue with size, we might get overflow
+	    
+	    // sendPacket( packet ); 
+	}
+	  
+	   
     void sendPacket(Packet packet) {
         uint packetSize = packet.payloadLength + 7;
         ubyte[] data;
@@ -61,9 +92,20 @@ class Lightcrafter {
         this.socket.send(data);
     }
 
+	void setImageMode() {
+
+	}
+
 }
 
 void main() {
-    auto lightcrafter = new Lightcrafter();
-    lightcrafter.setSolidColor(0x00, 0xff, 0xff);
+    Lightcrafter.sendImageToBuffer( cast(char[])"sample.bmp" );
+	
+	 auto lightcrafter = new Lightcrafter();
+     // lightcrafter.setSolidColor(0xff, 0x00, 0xff);
+   
+
+    lightcrafter.setImageMode( );
+	lightcrafter.sendImageToBuffer( cast(char[])"sample.bmp" );
+	writefln("done");
 }
