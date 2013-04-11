@@ -1,4 +1,3 @@
-
 enum PacketType : ubyte {
     SYSTEM_BUSY                 = 0x00,
     ERROR                       = 0x01,
@@ -9,8 +8,8 @@ enum PacketType : ubyte {
 }
 
 enum ErrorCode : ubyte {
-    UNKNOWN_ERROR               = 0x01,
-    INVALID_COMMAND             = 0x02,
+    UNKNOWN_ERROR               = 0x01,	
+	INVALID_COMMAND             = 0x02,
     INVALID_PARAMETER           = 0x03,
     OUT_OF_MEMORY               = 0x04,
     DEVICE_FAILURE              = 0x05,
