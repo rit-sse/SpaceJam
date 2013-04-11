@@ -1,8 +1,7 @@
 import std.stdio;
 import std.socket;
 
-import lightcrafter;
-
+import lightcrafter.constants;
 
 class Lightcrafter {
    
