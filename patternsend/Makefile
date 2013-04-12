@@ -17,7 +17,7 @@ projector.test.o:
 	dmd lightcrafter/projector.d -c -unittest
 
 with-tests: lightcrafter.o shell.o projector.test.o
-	dmd *.o -ofshell.test.out	 
+	dmd **.d -unittest 
    
 
 clean:

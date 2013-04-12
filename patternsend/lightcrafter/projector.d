@@ -8,7 +8,9 @@ class Projector {
 
     private Socket socket;
 
-    this(Address address = new InternetAddress("192.168.1.100", 0x5555)) {
+   
+	
+	this(Address address = new InternetAddress("192.168.1.100", 0x5555)) {
         this.socket = new TcpSocket(address);
     }
 
@@ -79,9 +81,11 @@ class Projector {
 
 
 
-unittest{
-   
-   Projector p = new Projector( new InternetAddress("127.0.0.1", 0x555) );
-
-
-}
+// unittest{
+//    
+//    Projector p = new Projector();
+//    
+//    
+//    
+//    writefln("unittest finished; moving on to program execution"); 
+// }

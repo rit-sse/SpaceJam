@@ -32,6 +32,15 @@ int main(){
       lightcrafter.setSolidColor( r, g, b );
       writefln( "setting the color to %d %d %d", r, g, b);
     }
+
+	else if( match(input, regex("^load sequence .*") ) ){
+	  
+	  auto match = match( input, regex("load sequence (.*)") );
+	  auto dir = match.captures[1];    
+	  lightcrafter.loadImages( cast(string)dir   ); 
+	  
+
+	}
     
     
     stdout.flush(); 
