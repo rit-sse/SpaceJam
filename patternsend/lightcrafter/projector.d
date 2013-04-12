@@ -1,4 +1,4 @@
-
+import std.file;
 import std.stdio;
 import std.socket;
 
@@ -25,9 +25,44 @@ class Projector {
 	 * @param the location of a directory
 	 */
     void loadImages( string directory ){
+	  
+	  auto dirListing = dirEntries( directory, "*.bmp", SpanMode.shallow );		 
+	  writefln("got a directory listing...");
+	  
+	  ubyte i = 0;
+	  foreach(DirEntry d; dirListing){
+		 auto filename = d.name();
+		 
+		 writefln("got an image: %s", filename);
+		 
+		 loadFrame( filename, i  ); 		  
+		 i++;
+	  }
 	   
-	     	 	 
 
+	}
+
+
+
+	void loadFrame( string filename, ubyte i  ){
+		 
+	    writefln("starting loadFrame with %s and %d", filename, i ); 
+		auto filebytes = cast(ubyte[])read(filename);
+		
+		Packet packet;
+        packet.packetType = PacketType.WRITE_COMMAND;
+        packet.command = Command.PATTERN_DEFINITION;
+        packet.flags = CommandFlag.PAYLOAD_COMPLETE_DATA;
+	    
+
+		packet.payload = i ~ filebytes;
+		packet.payload = packet.payload.reverse;
+	    packet.payloadLength = cast(ushort)packet.payload.length;
+		
+		writefln("ready to load into : %d", i); 
+		
+		sendPacket( packet ); 		
+	   
 	}
      
      	
@@ -51,7 +86,8 @@ class Projector {
         uint packetSize = packet.payloadLength + 7;
         ubyte[] data;
         data.length = packetSize;
-
+	     
+	    
         // Create the header
         data[0] = packet.packetType;
         data[1] = (packet.command & 0xff00) >> 8;
@@ -74,6 +110,7 @@ class Projector {
 
         // Send the packet
         this.socket.send(data);
+		writefln("send a packet (size %d)", packet.payloadLength);
     }
 
 }

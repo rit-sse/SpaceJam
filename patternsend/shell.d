@@ -21,6 +21,7 @@ int main(){
    
 
 	  lightcrafter = new Projector();
+	  writefln("connected");
     }
 
     else if( match(input, regex("color [0-9]+ [0-9]+ [0-9]+") ) ){
@@ -33,13 +34,16 @@ int main(){
       writefln( "setting the color to %d %d %d", r, g, b);
     }
 
-	else if( match(input, regex("^load sequence .*") ) ){
-	  
+	else if( match(input, regex("load sequence (.*)") ) ){
+	  writefln("load sequence---"); 
 	  auto match = match( input, regex("load sequence (.*)") );
 	  auto dir = match.captures[1];    
+	  writefln("loading from %s", dir);
 	  lightcrafter.loadImages( cast(string)dir   ); 
 	  
 
+	}else{
+	  writefln("did not recognize input string");
 	}
     
     
