@@ -115,7 +115,7 @@ class Lightcrafter {
 
 }
 
-void main() {
+unittest {
     Lightcrafter.sendImageToBuffer( cast(char[])"sample.bmp" );
 	
 	 auto lightcrafter = new Lightcrafter();
