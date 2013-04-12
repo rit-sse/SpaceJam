@@ -1,5 +1,9 @@
-print("do you want to replace images that have already been converted? (Y/n): ")
-input = gets.chomp
+if ARGV[0] == nil
+	print("do you want to replace images that have already been converted? (Y/n): ")
+	input = gets.chomp
+else
+	input = ARGV[0]
+end
 images = File.join("**", "*.png")
 Dir.glob(images).each do |image|
   outFile = "./bitFolder/#{image.split(".")[0]}.bmp"
