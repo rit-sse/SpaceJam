@@ -16,7 +16,21 @@ class Projector {
         socket.close();
     }
 
-    void setSolidColor(ubyte r, ubyte g, ubyte b) {
+
+    
+	/**
+	 * load a directory of 96 images into the buffer
+	 * @param the location of a directory
+	 */
+    void loadImages( string directory ){
+	   
+	     	 	 
+
+	}
+     
+     	
+	  
+	void setSolidColor(ubyte r, ubyte g, ubyte b) {
         Packet packet;
         packet.packetType = PacketType.WRITE_COMMAND;
         packet.command = Command.STATIC_COLOR;
@@ -59,5 +73,15 @@ class Projector {
         // Send the packet
         this.socket.send(data);
     }
+
+}
+
+
+
+
+unittest{
+   
+   Projector p = new Projector( new InternetAddress("127.0.0.1", 0x555) );
+
 
 }

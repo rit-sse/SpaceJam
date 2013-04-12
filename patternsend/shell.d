@@ -17,8 +17,10 @@ int main(){
   while( input != "exit" ){
     
 
-    if( match( input, regex("connect") ) ){
-      lightcrafter = new Projector();
+    if( match( input, regex("^connect") ) ){
+   
+
+	  lightcrafter = new Projector();
     }
 
     else if( match(input, regex("color [0-9]+ [0-9]+ [0-9]+") ) ){
