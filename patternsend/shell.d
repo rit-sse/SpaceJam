@@ -2,13 +2,14 @@ import std.stdio;
 import std.string;
 import std.regex;
 import std.conv;
-import patternsend; 
+
+import lightcrafter.projector; 
 
 
 int main(){
   
   char[] input;
-  Lightcrafter lightcrafter;  
+  Projector lightcrafter;  
    
   readln( input );  
   input = strip(input);
@@ -17,7 +18,7 @@ int main(){
     
 
     if( match( input, regex("connect") ) ){
-      lightcrafter = new Lightcrafter();
+      lightcrafter = new Projector();
     }
 
     else if( match(input, regex("color [0-9]+ [0-9]+ [0-9]+") ) ){
