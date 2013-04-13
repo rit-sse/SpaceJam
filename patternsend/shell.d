@@ -6,53 +6,39 @@ import std.conv;
 import lightcrafter.projector; 
 
 
-int main(){
-  
-  char[] input;
-  Projector lightcrafter;  
-   
-  readln( input );  
-  input = strip(input);
-  
-  while( input != "exit" ){
-    
+void main() {
+    char[] input;
+    Projector lightcrafter;
 
-    if( match( input, regex("^connect") ) ){
-   
-
-	  lightcrafter = new Projector();
-	  writefln("connected");
-    }
-
-    else if( match(input, regex("color [0-9]+ [0-9]+ [0-9]+") ) ){
-      auto match = match( input, regex("color ([0-9]+) ([0-9]+) ([0-9]+)") );
-      auto r= to!ubyte( match.captures[1] );  
-      auto g = to!ubyte( match.captures[2] );  
-      auto b = to!ubyte( match.captures[3] );  
-      
-      lightcrafter.setSolidColor( r, g, b );
-      writefln( "setting the color to %d %d %d", r, g, b);
-    }
-
-	else if( match(input, regex("load sequence (.*)") ) ){
-	  writefln("load sequence---"); 
-	  auto match = match( input, regex("load sequence (.*)") );
-	  auto dir = match.captures[1];    
-	  writefln("loading from %s", dir);
-	  lightcrafter.loadImages( cast(string)dir   ); 
-	  
-
-	}else{
-	  writefln("did not recognize input string");
-	}
-    
-    
-    stdout.flush(); 
-  
-    readln( input );  
+    readln(input);
     input = strip(input);
-  
-  }
 
-  return 1;
+    while (input != "exit") {
+        if (match(input, regex("^connect"))) {
+            lightcrafter = new Projector();
+            writefln("connected");
+        } else if (match(input, regex("color [0-9]+ [0-9]+ [0-9]+"))) {
+            auto match = match(input, regex("color ([0-9]+) ([0-9]+) ([0-9]+)"));
+            auto r = to!ubyte(match.captures[1]);
+            auto g = to!ubyte(match.captures[2]);
+            auto b = to!ubyte(match.captures[3]);
+
+            lightcrafter.setSolidColor(r, g, b);
+            writefln( "setting the color to %d %d %d", r, g, b);
+        } else if (match(input, regex("load sequence (.*)"))) {
+            auto match = match( input, regex("load sequence (.*)"));
+            auto dir = match.captures[1];
+
+            writefln("load sequence---");
+            writefln("loading from %s", dir);
+            lightcrafter.loadImages(cast(string)dir);
+        } else {
+            writefln("did not recognize input string");
+        }
+
+        stdout.flush();
+
+        readln(input);
+        input = strip(input);
+    }
 }

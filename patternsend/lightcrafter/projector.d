@@ -7,8 +7,6 @@ import lightcrafter.constants;
 class Projector {
 
     private Socket socket;
-
-   
 	
 	this(Address address = new InternetAddress("192.168.1.100", 0x5555)) {
         this.socket = new TcpSocket(address);
@@ -18,55 +16,40 @@ class Projector {
         socket.close();
     }
 
-
-    
 	/**
-	 * load a directory of 96 images into the buffer
+	 * Load a directory of 96 images into the buffer
 	 * @param the location of a directory
 	 */
-    void loadImages( string directory ){
-	  
-	  auto dirListing = dirEntries( directory, "*.bmp", SpanMode.shallow );		 
+    void loadImages(string directory) {
+	  auto dirListing = dirEntries(directory, "*.bmp", SpanMode.shallow);
 	  writefln("got a directory listing...");
-	  
-	  ubyte i = 0;
-	  foreach(DirEntry d; dirListing){
-		 auto filename = d.name();
-		 
-		 writefln("got an image: %s", filename);
-		 
-		 loadFrame( filename, i  ); 		  
-		 i++;
-	  }
-	   
 
+	  foreach (ubyte i, DirEntry d; dirListing) {
+		 auto filename = d.name();
+		 writefln("got an image: %s", filename);
+
+		 loadFrame(filename, i);
+	  }
 	}
 
-
-
-	void loadFrame( string filename, ubyte i  ){
-		 
-	    writefln("starting loadFrame with %s and %d", filename, i ); 
+	void loadFrame(string filename, ubyte i) {
+	    writefln("starting loadFrame with %s and %d", filename, i);
 		auto filebytes = cast(ubyte[])read(filename);
 		
 		Packet packet;
         packet.packetType = PacketType.WRITE_COMMAND;
         packet.command = Command.PATTERN_DEFINITION;
         packet.flags = CommandFlag.PAYLOAD_COMPLETE_DATA;
-	    
 
 		packet.payload = i ~ filebytes;
 		packet.payload = packet.payload.reverse;
 	    packet.payloadLength = cast(ushort)packet.payload.length;
 		
-		writefln("ready to load into : %d", i); 
+		writefln("ready to load into : %d", i);
 		
-		sendPacket( packet ); 		
-	   
+		sendPacket(packet);		
 	}
-     
-     	
-	  
+
 	void setSolidColor(ubyte r, ubyte g, ubyte b) {
         Packet packet;
         packet.packetType = PacketType.WRITE_COMMAND;
@@ -86,8 +69,7 @@ class Projector {
         uint packetSize = packet.payloadLength + 7;
         ubyte[] data;
         data.length = packetSize;
-	     
-	    
+
         // Create the header
         data[0] = packet.packetType;
         data[1] = (packet.command & 0xff00) >> 8;
@@ -114,15 +96,3 @@ class Projector {
     }
 
 }
-
-
-
-
-// unittest{
-//    
-//    Projector p = new Projector();
-//    
-//    
-//    
-//    writefln("unittest finished; moving on to program execution"); 
-// }
