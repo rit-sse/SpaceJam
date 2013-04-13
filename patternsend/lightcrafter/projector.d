@@ -24,11 +24,13 @@ class Projector {
 	  auto dirListing = dirEntries(directory, "*.bmp", SpanMode.shallow);
 	  writefln("got a directory listing...");
 
-	  foreach (ubyte i, DirEntry d; dirListing) {
+      ubyte curImage = 0;
+	  foreach (DirEntry d; dirListing) {
 		 auto filename = d.name();
 		 writefln("got an image: %s", filename);
 
-		 loadFrame(filename, i);
+		 loadFrame(filename, curImage);
+         curImage++;
 	  }
 	}
 
