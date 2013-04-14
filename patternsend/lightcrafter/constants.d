@@ -92,11 +92,3 @@ struct PatternSequenceSetting {
     ubyte ledSelect;
 }
 
-struct Packet {
-    PacketType packetType;
-    ushort command;
-    ubyte flags;
-    ushort payloadLength;
-    ubyte[] payload;
-    ubyte checksum;
-}

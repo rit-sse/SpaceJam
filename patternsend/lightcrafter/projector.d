@@ -16,6 +16,21 @@ class Projector {
         socket.close();
     }
 
+    void loadTestPatternSettings() {
+        ubyte[] payload = [
+            0x01,       // bit depth
+            0x01,       // number of images (1-96)
+            0x00,       // no inverted images
+            0x00,       // advance via a command
+            0x00, 0x00, 0x00, 0x00,     // trigger delay
+            0x00, 0x00, 0x00, 0x00,     // trigger period
+            0x00, 0x00, 0x00, 0x00,     // exposure time
+            0x02        // blue is best color
+        ];
+
+        sendCommand(Command.PATTERN_SEQUENCE_SETTING, payload);
+    }
+
 	/**
 	 * Load a directory of 96 images into the buffer
 	 * @param the location of a directory
@@ -31,70 +46,49 @@ class Projector {
 
 		 loadFrame(filename, curImage);
          curImage++;
+         break;
 	  }
 	}
 
 	void loadFrame(string filename, ubyte i) {
-	    writefln("starting loadFrame with %s and %d", filename, i);
-		auto filebytes = cast(ubyte[])read(filename);
+		ubyte[] payload;
+		payload ~= i;
+        payload ~= cast(ubyte[])read(filename);
 		
-		Packet packet;
-        packet.packetType = PacketType.WRITE_COMMAND;
-        packet.command = Command.PATTERN_DEFINITION;
-        packet.flags = CommandFlag.PAYLOAD_COMPLETE_DATA;
-
-		packet.payload = i ~ filebytes;
-		packet.payload = packet.payload.reverse;
-	    packet.payloadLength = cast(ushort)packet.payload.length;
-		
-		writefln("ready to load into : %d", i);
-		
-		sendPacket(packet);		
+	    writefln("loading pattern frame %d with %s", i, filename);
+		sendCommand(Command.PATTERN_DEFINITION, payload);		
 	}
 
 	void setSolidColor(ubyte r, ubyte g, ubyte b) {
-        Packet packet;
-        packet.packetType = PacketType.WRITE_COMMAND;
-        packet.command = Command.STATIC_COLOR;
-        packet.flags = CommandFlag.PAYLOAD_COMPLETE_DATA;
-
-        packet.payloadLength = 4;
-        packet.payload ~= b;
-        packet.payload ~= g;
-        packet.payload ~= r;
-        packet.payload ~= 0x00;
-
-        sendPacket(packet);
+        ubyte[] payload = [b, g, r, 0x00];
+        sendCommand(Command.STATIC_COLOR, payload);
     }
 
-    void sendPacket(Packet packet) {
-        uint packetSize = packet.payloadLength + 7;
-        ubyte[] data;
-        data.length = packetSize;
+    void sendCommand(Command command, ubyte[] payload) {
+        ubyte[] packet;
 
-        // Create the header
-        data[0] = packet.packetType;
-        data[1] = (packet.command & 0xff00) >> 8;
-        data[2] = packet.command & 0x00ff;
-        data[3] = packet.flags;
-        data[4] = cast(ubyte)packet.payloadLength;
-        data[5] = 0x00;
+        // Construct the header
+        packet ~= PacketType.WRITE_COMMAND;
+        packet ~= (command & 0xff00) >> 8;
+        packet ~= (command & 0x00ff);
+        packet ~= CommandFlag.PAYLOAD_COMPLETE_DATA;
+        //packet ~= (payload.length & 0xff00) >> 8;
+        packet ~= (payload.length & 0x00ff);
+        packet ~= (payload.length & 0xff00) >> 8;
 
         // Add the payload
-        for (int i = 0; i < packet.payloadLength; i++) {
-            data[i + 6] = packet.payload[i];
-        }
+        packet ~= payload;
 
         // Compute the checksum
         ubyte checksum = 0;
-        for (int i = 0; i < packetSize - 1; i++) {
-            checksum += data[i];
+        foreach (ubyte data; packet) {
+            checksum += data;
         }
-        data[packetSize - 1] = checksum % 0x100;
+        packet ~= checksum % 0x100;
 
         // Send the packet
-        this.socket.send(data);
-		writefln("send a packet (size %d)", packet.payloadLength);
+        this.socket.send(packet);
+		writefln("send a packet (size %d)", packet.length);
     }
 
 }

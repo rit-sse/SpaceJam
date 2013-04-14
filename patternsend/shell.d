@@ -23,8 +23,8 @@ void main() {
             auto g = to!ubyte(match.captures[2]);
             auto b = to!ubyte(match.captures[3]);
 
-            lightcrafter.setSolidColor(r, g, b);
             writefln( "setting the color to %d %d %d", r, g, b);
+            lightcrafter.setSolidColor(r, g, b);
         } else if (match(input, regex("load sequence (.*)"))) {
             auto match = match( input, regex("load sequence (.*)"));
             auto dir = match.captures[1];
@@ -32,6 +32,8 @@ void main() {
             writefln("load sequence---");
             writefln("loading from %s", dir);
             lightcrafter.loadImages(cast(string)dir);
+        } else if (input == "load test settings") {
+            lightcrafter.loadTestPatternSettings();
         } else {
             writefln("did not recognize input string");
         }
