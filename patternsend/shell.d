@@ -3,7 +3,8 @@ import std.string;
 import std.regex;
 import std.conv;
 
-import lightcrafter.projector; 
+import lightcrafter.projector;
+import lightcrafter.constants;
 
 
 void main() {
@@ -34,6 +35,8 @@ void main() {
             lightcrafter.loadImages(cast(string)dir);
         } else if (input == "load test settings") {
             lightcrafter.loadTestPatternSettings();
+        } else if (input == "show pattern") {
+            lightcrafter.setDisplayMode(DisplayMode.PATTERN_SEQUENCE);
         } else {
             writefln("did not recognize input string");
         }

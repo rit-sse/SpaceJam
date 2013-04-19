@@ -16,17 +16,24 @@ class Projector {
         socket.close();
     }
 
+    void setDisplayMode(DisplayMode mode) {
+        ubyte[] payload;
+        payload ~= mode;
+
+        sendCommand(Command.CURRENT_DISPLAY_MODE, payload);
+    }
+
     void loadTestPatternSettings() {
         ubyte[] payload = [
             0x01,       // bit depth
-            0x01, 0x00, // number of images (1-96)
+            0x60, 0x00, // number of images (1-96)
             0x00,       // no inverted images
             0x01,       // auto advance
             0x00, 0x00, 0x00, 0x00,     // trigger delay
             0x00, 0x00, 0x00, 0x00,     // trigger period
             0x00, 0x00, 0x00, 0x00,     // exposure time
             0x02,        // blue is best color
-            0x00,        // only display the pattern once
+            0x01,        // display the pattern in a loop
             0x00         // the documentation lies - we need 20 bytes.  Not sure what for
         ];
 
@@ -48,7 +55,6 @@ class Projector {
 
 		 loadFrame(filename, curImage);
          curImage++;
-         break;
 	  }
 	}
 
