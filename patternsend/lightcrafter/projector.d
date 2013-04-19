@@ -16,6 +16,15 @@ class Projector {
         socket.close();
     }
 
+   
+    /**
+	 * tell the lightcrafter to start the pattern sequence
+	 * 
+	 */
+	void start(){
+	  sendCommand( Command.START_PATTERN_SEQUENCE, [0x1] );  
+	}
+
     void loadTestPatternSettings() {
         ubyte[] payload = [
             0x01,       // bit depth
@@ -92,5 +101,8 @@ class Projector {
         this.socket.send(packet);
 		writefln("send a packet (size %d)", packet.length);
     }
+
+
+
 
 }
