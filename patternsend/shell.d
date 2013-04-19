@@ -38,9 +38,10 @@ void main() {
         } else if (input == "show pattern") {
             lightcrafter.setDisplayMode(DisplayMode.PATTERN_SEQUENCE);
         } else if( input == "start"){
-			
-			writefln("starting");
 			lightcrafter.start();
+		} else if( input == "stop" ){
+			
+			lightcrafter.stop();			
 			  
 		}else {
             writefln("did not recognize input string");

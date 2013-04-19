@@ -24,6 +24,14 @@ class Projector {
 	void start(){
 	  sendCommand( Command.START_PATTERN_SEQUENCE, [0x1] );  
 	}
+
+   
+    /**
+	 * tell the lightcrafter to stop the pattern sequence
+	 */
+	void stop(){
+	  sendCommand( Command.START_PATTERN_SEQUENCE, [0x0] );
+	}
   
     void setDisplayMode(DisplayMode mode) {
         ubyte[] payload;
