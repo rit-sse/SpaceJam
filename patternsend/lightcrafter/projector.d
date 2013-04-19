@@ -19,16 +19,18 @@ class Projector {
     void loadTestPatternSettings() {
         ubyte[] payload = [
             0x01,       // bit depth
-            0x01,       // number of images (1-96)
+            0x01, 0x00, // number of images (1-96)
             0x00,       // no inverted images
-            0x00,       // advance via a command
+            0x01,       // auto advance
             0x00, 0x00, 0x00, 0x00,     // trigger delay
             0x00, 0x00, 0x00, 0x00,     // trigger period
             0x00, 0x00, 0x00, 0x00,     // exposure time
-            0x02        // blue is best color
+            0x02,        // blue is best color
+            0x00,        // only display the pattern once
+            0x00         // the documentation lies - we need 20 bytes.  Not sure what for
         ];
 
-        sendCommand(Command.PATTERN_SEQUENCE_SETTING, payload);
+        sendCommand(Command.EX_PATTERN_SEQUENCE_SETTING, payload);
     }
 
 	/**
