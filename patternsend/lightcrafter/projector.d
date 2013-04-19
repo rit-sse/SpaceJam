@@ -73,6 +73,28 @@ class Projector {
 		 loadFrame(filename, curImage);
          curImage++;
 	  }
+
+
+
+	  foreach (DirEntry d; dirListing) {
+		 auto filename = d.name();
+		 writefln("got an image: %s", filename);
+
+		 loadFrame(filename, curImage);
+         curImage++;
+	  }
+
+
+
+	  foreach (DirEntry d; dirListing) {
+		 auto filename = d.name();
+		 writefln("got an image: %s", filename);
+
+		 loadFrame(filename, curImage);
+         curImage++;
+	  }
+
+
 	}
 
 	void loadFrame(string filename, ubyte i) {
