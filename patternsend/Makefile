@@ -25,3 +25,9 @@ clean:
 	rm shell.out
 
 
+
+docs: all
+	dmd -D -c shell.d
+	dmd -D -c lightcrafter/constants.d
+	dmd -D -c lightcrafter/projector.d
+	mv *.html docs/

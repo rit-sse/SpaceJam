@@ -7,6 +7,17 @@ import lightcrafter.projector;
 import lightcrafter.constants;
 
 
+/**
+ * Available commands:
+ * <ul>
+ * <li>connect: connect to the lightcrafter (at the default ip address)
+ * <li>color [r] [g] [b]: set the lightcrafter to display a solid color</li>
+ * <li>show pattern: set the lightcrafter to pattern mode</li>
+ * <li>start: start displaying the pattern</li>
+ * <li>stop: stop displaying the pattern</li>
+ * <li>exit: exit the shell</li>
+ * </ul>
+ */
 void main() {
     char[] input;
     Projector lightcrafter;

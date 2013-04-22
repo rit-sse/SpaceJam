@@ -1,3 +1,6 @@
+/**
+ * Defines the type of packet
+ */
 enum PacketType : ubyte {
     SYSTEM_BUSY                 = 0x00,
     ERROR                       = 0x01,
@@ -7,6 +10,10 @@ enum PacketType : ubyte {
     READ_RESPONSE               = 0x05
 }
 
+
+/**
+ * Error codes used in error packets
+ */
 enum ErrorCode : ubyte {
     UNKNOWN_ERROR               = 0x01,	
 	INVALID_COMMAND             = 0x02,
@@ -21,6 +28,11 @@ enum ErrorCode : ubyte {
     INCORRECT_CONTINUATION_FLAG = 0x0b
 }
 
+
+/**
+ * Command flags are used when data spans
+ * multiple packets
+ */
 enum CommandFlag : ubyte {
     PAYLOAD_COMPLETE_DATA       = 0x00,
     PAYLOAD_START_DATA          = 0x01,
@@ -28,6 +40,10 @@ enum CommandFlag : ubyte {
     PAYLOAD_END_DATA            = 0x03
 }
 
+
+/**
+ * defines the difference commands
+ */
 enum Command : ushort {
     VERSION_STRING              = 0x0100,
     CURRENT_DISPLAY_MODE        = 0x0101,
@@ -61,6 +77,9 @@ enum Command : ushort {
     DLPC300_REGISTER            = 0xff00
 }
 
+/**
+ * Display modes
+ */
 enum DisplayMode : ubyte {
     STATIC_IMAGE                = 0x00,
     INTERNAL_TEST_PATTERN       = 0x01,
@@ -80,6 +99,7 @@ enum TriggerType : ubyte {
     CAMERA_NEGATIVE             = 0x05,
     EXTERNAL_WITH_EXPOSURE      = 0x06
 }
+
 
 struct PatternSequenceSetting {
     ubyte bitDepth;

@@ -4,14 +4,31 @@ import std.socket;
 
 import lightcrafter.constants;
 
+
+
+/**
+ * A class that interfaces with the lightcrafter
+ */
 class Projector {
 
     private Socket socket;
-	
+	  
+    /**
+	 * Create a new Projector
+	 *
+	 * address = the address of the lightcrafter, defaults to 192.168.1.100 (the 
+	 * hardcoded default)
+	 */	
 	this(Address address = new InternetAddress("192.168.1.100", 0x5555)) {
         this.socket = new TcpSocket(address);
     }
+   
 
+    /**
+	 * desctructor
+	 *
+	 * closes the socket connection
+	 */
     ~this() {
         socket.close();
     }
@@ -33,14 +50,23 @@ class Projector {
 	  sendCommand( Command.START_PATTERN_SEQUENCE, [0x0] );
 	}
   
-    void setDisplayMode(DisplayMode mode) {
+    
+	/**
+	 * Set the projector to a specific display mode
+	 *
+	 * params:
+	 * mode = the display mode, options are STATIC_IMAGE, 
+	 * STATIC_COLOR, HDMI_VIDEO, or PATTERN_SEQUENCE
+	 */
+	void setDisplayMode(DisplayMode mode) {
         ubyte[] payload;
         payload ~= mode;
 
         sendCommand(Command.CURRENT_DISPLAY_MODE, payload);
     }
 
-    void loadTestPatternSettings() {
+     
+	void loadTestPatternSettings() {
         ubyte[] payload = [
             0x01,       // bit depth
             0x60, 0x00, // number of images (1-96)
@@ -59,7 +85,15 @@ class Projector {
 
 	/**
 	 * Load a directory of 96 images into the buffer
-	 * @param the location of a directory
+	 *
+	 * The directory should contain 96 .bmp files
+	 *
+	 * note:
+	 * the display mode has to be reset after images are loaded into the buffer, 
+	 * do this by calling start()
+	 * 
+	 * params:
+	 * directory = the location of a directory
 	 */
     void loadImages(string directory) {
 	  auto dirListing = dirEntries(directory, "*.bmp", SpanMode.shallow);
@@ -76,28 +110,19 @@ class Projector {
 
 
 
-	  foreach (DirEntry d; dirListing) {
-		 auto filename = d.name();
-		 writefln("got an image: %s", filename);
-
-		 loadFrame(filename, curImage);
-         curImage++;
-	  }
-
-
-
-	  foreach (DirEntry d; dirListing) {
-		 auto filename = d.name();
-		 writefln("got an image: %s", filename);
-
-		 loadFrame(filename, curImage);
-         curImage++;
-	  }
 
 
 	}
 
-	void loadFrame(string filename, ubyte i) {
+	
+    /** 
+	 * load a single frame into the buffer
+	 *
+	 * params:
+	 * filename = the filename (or file location) of the image to load
+	 * i = the location in the image buffer
+	 */	
+	private void loadFrame(string filename, ubyte i) {
 		ubyte[] payload;
 		payload ~= i;
         payload ~= cast(ubyte[])read(filename);
@@ -106,12 +131,22 @@ class Projector {
 		sendCommand(Command.PATTERN_DEFINITION, payload);		
 	}
 
+	
+	/**
+	 * tell this projector to display a solid color
+	 *
+	 * params:
+	 * r = red component
+	 * g = green component
+	 * b = blue component
+	 *
+	 */
 	void setSolidColor(ubyte r, ubyte g, ubyte b) {
         ubyte[] payload = [b, g, r, 0x00];
         sendCommand(Command.STATIC_COLOR, payload);
     }
 
-    void sendCommand(Command command, ubyte[] payload) {
+    private void sendCommand(Command command, ubyte[] payload) {
         ubyte[] packet;
 
         // Construct the header
@@ -137,8 +172,6 @@ class Projector {
         this.socket.send(packet);
 		writefln("send a packet (size %d)", packet.length);
     }
-
-
 
 
 }
