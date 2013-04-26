@@ -15,6 +15,7 @@ import lightcrafter.constants;
  * <li>show pattern: set the lightcrafter to pattern mode</li>
  * <li>start: start displaying the pattern</li>
  * <li>show static: set the projector to static image mode</li>
+ * <li>set positive trigger: set the projector to advance buffer on POSITIVE triggers</li>
  * <li>stop: stop displaying the pattern</li>
  * <li>exit: exit the shell</li>
  * </ul>
@@ -56,6 +57,10 @@ void main() {
 		 
 	    else if ( input == "show static" ){
 			lightcrafter.setDisplayMode( DisplayMode.STATIC_IMAGE );		  
+		}
+
+		else if (input == "set positive trigger" ){
+			lightcrafter.setPositiveTrigger();
 		}
 		
 		else if (input == "load test settings") {

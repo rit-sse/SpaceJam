@@ -131,7 +131,15 @@ class Projector {
 		sendCommand(Command.PATTERN_DEFINITION, payload);		
 	}
 
-	
+   
+   
+    void setPositiveTrigger(){
+		 
+	  ubyte[] payload = [TriggerType.EXTERNAL_POSITIVE];
+	  sendCommand( Command.TRIGGER_OUTPUT_SETTING, payload );
+	}
+    	
+		
 	/**
 	 * tell this projector to display a solid color
 	 *
