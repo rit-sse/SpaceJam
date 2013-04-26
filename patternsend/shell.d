@@ -14,6 +14,7 @@ import lightcrafter.constants;
  * <li>color [r] [g] [b]: set the lightcrafter to display a solid color</li>
  * <li>show pattern: set the lightcrafter to pattern mode</li>
  * <li>start: start displaying the pattern</li>
+ * <li>show static: set the projector to static image mode</li>
  * <li>stop: stop displaying the pattern</li>
  * <li>exit: exit the shell</li>
  * </ul>
