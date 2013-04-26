@@ -143,7 +143,7 @@ class Projector {
 		 0x0, 0x0, 0x0, 0x0,  // input delay in microseconds
 		 0x0, 0x0, 0x0, 0x0,  // ignored for non-Auto trigger mode
 		 0x0, 0x0, 0x0, 0x0, //	 exposure time
-		 0x0,			   // red
+		 0x1,			   // red
 		 0x1		   // continuous display
 	  ];
 	  sendCommand( Command.EX_PATTERN_SEQUENCE_SETTING, payload );
