@@ -13,6 +13,11 @@
 		4CBC6F5A1729D9A900552A87 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4CBC6F581729D9A900552A87 /* Credits.rtf */; };
 		4CBC6F5D1729D9A900552A87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC6F5C1729D9A900552A87 /* AppDelegate.m */; };
 		4CBC6F601729D9A900552A87 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CBC6F5E1729D9A900552A87 /* MainMenu.xib */; };
+		4CBC6F671729D9B300552A87 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBC6F661729D9B300552A87 /* OpenGL.framework */; };
+		4CBC6F691729D9BE00552A87 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBC6F681729D9BE00552A87 /* GLKit.framework */; };
+		4CBC6F6C1729D9FD00552A87 /* RenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC6F6B1729D9FD00552A87 /* RenderView.m */; };
+		4CBC6F6F172A568700552A87 /* VDShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC6F6D172A568700552A87 /* VDShader.vsh */; };
+		4CBC6F70172A568700552A87 /* Shader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC6F6E172A568700552A87 /* Shader.fsh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +34,13 @@
 		4CBC6F5B1729D9A900552A87 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4CBC6F5C1729D9A900552A87 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		4CBC6F5F1729D9A900552A87 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4CBC6F661729D9B300552A87 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		4CBC6F681729D9BE00552A87 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		4CBC6F6A1729D9FD00552A87 /* RenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderView.h; sourceTree = "<group>"; };
+		4CBC6F6B1729D9FD00552A87 /* RenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderView.m; sourceTree = "<group>"; };
+		4CBC6F6D172A568700552A87 /* VDShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = VDShader.vsh; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
+		4CBC6F6E172A568700552A87 /* Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.fsh; sourceTree = "<group>"; };
+		4CBC6F71172A667600552A87 /* shuttle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shuttle.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +48,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CBC6F691729D9BE00552A87 /* GLKit.framework in Frameworks */,
+				4CBC6F671729D9B300552A87 /* OpenGL.framework in Frameworks */,
 				4CBC6F4A1729D9A900552A87 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,6 +77,8 @@
 		4CBC6F481729D9A900552A87 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4CBC6F681729D9BE00552A87 /* GLKit.framework */,
+				4CBC6F661729D9B300552A87 /* OpenGL.framework */,
 				4CBC6F491729D9A900552A87 /* Cocoa.framework */,
 				4CBC6F4B1729D9A900552A87 /* Other Frameworks */,
 			);
@@ -82,8 +98,13 @@
 		4CBC6F4F1729D9A900552A87 /* VD Render */ = {
 			isa = PBXGroup;
 			children = (
+				4CBC6F6D172A568700552A87 /* VDShader.vsh */,
+				4CBC6F6E172A568700552A87 /* Shader.fsh */,
+				4CBC6F71172A667600552A87 /* shuttle.h */,
 				4CBC6F5B1729D9A900552A87 /* AppDelegate.h */,
 				4CBC6F5C1729D9A900552A87 /* AppDelegate.m */,
+				4CBC6F6A1729D9FD00552A87 /* RenderView.h */,
+				4CBC6F6B1729D9FD00552A87 /* RenderView.m */,
 				4CBC6F5E1729D9A900552A87 /* MainMenu.xib */,
 				4CBC6F501729D9A900552A87 /* Supporting Files */,
 			);
@@ -168,6 +189,9 @@
 			files = (
 				4CBC6F561729D9A900552A87 /* main.m in Sources */,
 				4CBC6F5D1729D9A900552A87 /* AppDelegate.m in Sources */,
+				4CBC6F6C1729D9FD00552A87 /* RenderView.m in Sources */,
+				4CBC6F6F172A568700552A87 /* VDShader.vsh in Sources */,
+				4CBC6F70172A568700552A87 /* Shader.fsh in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
