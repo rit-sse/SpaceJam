@@ -131,7 +131,25 @@ class Projector {
 		sendCommand(Command.PATTERN_DEFINITION, payload);		
 	}
 
-	
+   
+   
+    void setPositiveTrigger(){
+		 
+	  ubyte[] payload = [ 
+		 0x1,  // single bit depth
+		 0x6, 0x0, // number of patterns in the sequence (96 in hex)
+		 0x0,	  // don't show inverted patterns
+		 0x2,	  // positve trigger 
+		 0x0, 0x0, 0x0, 0x0,  // input delay in microseconds
+		 0x0, 0x0, 0x0, 0x0,  // ignored for non-Auto trigger mode
+		 0x0, 0x0, 0x0, 0x0, //	 exposure time
+		 0x1,			   // red
+		 0x1		   // continuous display
+	  ];
+	  sendCommand( Command.EX_PATTERN_SEQUENCE_SETTING, payload );
+	}
+    	
+		
 	/**
 	 * tell this projector to display a solid color
 	 *

@@ -14,6 +14,8 @@ import lightcrafter.constants;
  * <li>color [r] [g] [b]: set the lightcrafter to display a solid color</li>
  * <li>show pattern: set the lightcrafter to pattern mode</li>
  * <li>start: start displaying the pattern</li>
+ * <li>show static: set the projector to static image mode</li>
+ * <li>set positive trigger: set the projector to advance buffer on POSITIVE triggers</li>
  * <li>stop: stop displaying the pattern</li>
  * <li>exit: exit the shell</li>
  * </ul>
@@ -29,7 +31,11 @@ void main() {
         if (match(input, regex("^connect"))) {
             lightcrafter = new Projector();
             writefln("connected");
-        } else if (match(input, regex("color [0-9]+ [0-9]+ [0-9]+"))) {
+        } 
+		
+		
+		
+		else if (match(input, regex("color [0-9]+ [0-9]+ [0-9]+"))) {
             auto match = match(input, regex("color ([0-9]+) ([0-9]+) ([0-9]+)"));
             auto r = to!ubyte(match.captures[1]);
             auto g = to!ubyte(match.captures[2]);
@@ -37,24 +43,45 @@ void main() {
 
             writefln( "setting the color to %d %d %d", r, g, b);
             lightcrafter.setSolidColor(r, g, b);
-        } else if (match(input, regex("load sequence (.*)"))) {
+        } 
+		
+		else if (match(input, regex("load sequence (.*)"))) {
             auto match = match( input, regex("load sequence (.*)"));
             auto dir = match.captures[1];
 
             writefln("load sequence---");
             writefln("loading from %s", dir);
             lightcrafter.loadImages(cast(string)dir);
-        } else if (input == "load test settings") {
+        } 
+		 
+		 
+	    else if ( input == "show static" ){
+			lightcrafter.setDisplayMode( DisplayMode.STATIC_IMAGE );		  
+		}
+
+		else if (input == "set positive trigger" ){
+			lightcrafter.setPositiveTrigger();
+		}
+		
+		else if (input == "load test settings") {
             lightcrafter.loadTestPatternSettings();
-        } else if (input == "show pattern") {
+        } 
+		
+		else if (input == "show pattern") {
             lightcrafter.setDisplayMode(DisplayMode.PATTERN_SEQUENCE);
-        } else if( input == "start"){
+        } 
+		
+		else if( input == "start"){
 			lightcrafter.start();
-		} else if( input == "stop" ){
+		} 
+		
+		else if( input == "stop" ){
 			
 			lightcrafter.stop();			
 			  
-		}else {
+		}
+		
+		else {
             writefln("did not recognize input string");
         }
 

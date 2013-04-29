@@ -1,13 +1,17 @@
-all: projector.o shell.o lightcrafter.o
-	dmd *.o -ofshell.out
+all: projector.o shell.o constants.o patternsend.o
+	dmd constants.o projector.o shell.o  -ofshell.out
+	dmd constants.o projector.o patternsend.o  -ofpatternsend
 
 
-lightcrafter.o: lightcrafter/constants.d
+constants.o: lightcrafter/constants.d
 	dmd lightcrafter/constants.d -c	
 
 projector.o: lightcrafter/projector.d
 	dmd lightcrafter/projector.d -c
    
+
+patternsend.o: patternsend.d
+	  dmd patternsend.d -c
    
 shell.o: shell.d	
 	dmd shell.d -c
