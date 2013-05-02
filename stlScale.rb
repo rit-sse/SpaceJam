@@ -57,14 +57,14 @@ def stl_stlStr(vertex_arr)
 	# for every 3 vertex's, make a face
 	puts("#{Time.new} #{vertex_arr.length/3-1}")
 	(0..(vertex_arr.length/3-1)).each do |i|
-		stlStr = stlStr + "facet normal 0 0 0\nouter loop\n"
-		stlStr = stlStr + "vertex #{vertex_arr.shift}\n"
-		stlStr = stlStr + "vertex #{vertex_arr.shift}\n"
-		stlStr = stlStr + "vertex #{vertex_arr.shift}\n"
-		stlStr = stlStr + "endloop\nendfacet\n"
+		stlStr.concat("facet normal 0 0 0\nouter loop\n")
+		stlStr.concat("vertex #{vertex_arr.shift}\n")
+		stlStr.concat("vertex #{vertex_arr.shift}\n")
+		stlStr.concat("vertex #{vertex_arr.shift}\n")
+		stlStr.concat("endloop\nendfacet\n")
 	end
 	puts(Time.new)
-	stlStr = stlStr + "endsolid object"
+	stlStr.concat("endsolid object")
 	return stlStr
 end
 
