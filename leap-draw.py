@@ -1,6 +1,6 @@
-import Leap, sys, math, pygame
-import pyglet
+import Leap, sys, math, pyglet, subprocess
 from pyglet.gl import *
+from pyglet.gl.glu import *
 from pyglet.window import key
 
 
@@ -9,12 +9,13 @@ class DrawListener(Leap.Listener):
 
     def on_init(self, controller):
         self.location = Leap.Vector()
+        self.cursor = Leap.Vector()
         self.drawn = False
-        self.w = 1680
-        self.h = 1050
-        filename = raw_input('What would you like to call this?')
-        self.file = open(filename+'.obj', 'w')
-        self.file.write('o ' + filename + '\n')
+        self.w = 800
+        self.h = 800
+        self.filename = raw_input('What would you like to call this?')
+        self.file = open(self.filename+'.obj', 'w')
+        self.file.write('o ' + self.filename + '\n')
         self.count = 0
         self.verticies = []
         print "Initialized"
@@ -33,6 +34,7 @@ class DrawListener(Leap.Listener):
         for x in range(0,self.count-4):
             self.file.write("f " + str(x+1) +  " " + str((x+1)%self.count + 1) + " " + str((x+2)%self.count + 1) + " " +  str((x+3)%self.count + 1)+"\n")
         self.file.close()
+        subprocess.call(['ruby', 'objToStl.rb', self.filename + '.obj', 'STLs/'+ self.filename + '.stl'])
 
     def on_frame(self, controller):
         frame = controller.frame()
@@ -41,19 +43,17 @@ class DrawListener(Leap.Listener):
             fingers = frame.hands[0].fingers
         numFingers = len(fingers)
         if numFingers > 0:
-            finger = fingers.rightmost
+            finger = fingers.frontmost
             tip = finger.tip_position
-            # print str(abs(self.location.x - tip.x - self.w/2)) + " " + str(abs(self.location.y - tip.y))
-            # if not self.drawn or (abs(self.location.x - tip.x - self.w/2) < 50 and abs(self.location.y - tip.y) < 50):
             self.location = tip
             self.location.x += self.w/2
-            self.verticies.append(self.location)
+            self.verticies.append(tip)
             self.count += 1
             self.drawn = True
 
 listener = DrawListener()
 controller = Leap.Controller()
-win = pyglet.window.Window(1680, 1050)
+win = pyglet.window.Window(800 , 800)
 
 def hsv_to_rgb(h, s, v):
     i = 0
@@ -110,6 +110,19 @@ def on_draw():
         glColor3d(rgb[0], rgb[1], rgb[2])
         glVertex2d(vertex.x, vertex.y)
     glEnd()
+
+def draw_circle(x, y, r, color=(1.0, 1.0, 1.0, 0.2)):
+    '''draws a circle of radius r centered at (x, y)'''
+    draw_ring(x, y, 0, r, color)
+
+def draw_ring(x, y, inner, outer, color=(1.0, 1.0, 1.0, 1.0)):
+    glPushMatrix()
+    glColor4f(*color)
+    glTranslatef(x, y, 0)
+    q = gluNewQuadric()
+    slices = min(360, 6*outer)
+    gluDisk(q, inner, outer, slices, 1)
+    glPopMatrix()
 
 @win.event
 def on_key_press(symbol, modifiers):
