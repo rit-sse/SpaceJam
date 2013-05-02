@@ -12,6 +12,6 @@ Dir.glob(images).each do |image|
     `mkdir #{outFolder[2..-2]}`
   end
   if !(input=="n" && File.file?(outFile))
-    `convert ./#{image} -resize 608x684 -depth 1 -colors 2 #{outFile}`
+    `convert ./#{image} -resize 684x608 -depth 1 -colors 2 #{outFile}`
   end
 end
