@@ -58,12 +58,6 @@
 
 uint16_t trigger;
 
-
-uint16_t toTicks(float milli) {
-	float tics = 72000 * milli;
-	return (uint16_t)tics;
-}
-
 void setup(){
 	  // Configure cpu and mandatory peripherals
 	  systemInit();
@@ -75,7 +69,7 @@ void setup(){
 	  timer16Enable(0);
 
 	  // set start interval
-	  trigger = toTicks(0.625);
+	  trigger = 626;
 
 	  // Setup gpio
 	  gpioInit();
@@ -115,9 +109,9 @@ int main(void)
 	setup();
 
 	while (1){
-	  //timer16DelayTicks(0, trigger);
-	  //gpioSetValue(2,0,1);
-	  //gpioSetValue(2,0,0);
+	  timer16DelayUS(0, trigger);
+	  gpioSetValue(2,0,1);
+	  gpioSetValue(2,0,0);
 	}
 
 	return 0;
@@ -130,14 +124,16 @@ void PIOINT1_IRQHandler(void){
 	//Check if we're pin1.5
 	regVal = gpioIntStatus(1, 5);
 	if (regVal){
-		//do some stuff
-		gpioSetValue(2,0,1);
+		// Bottom button
+
 		//clear the interrupt
 		gpioIntClear(1, 5);
 	}
 	regVal = gpioIntStatus(1, 8);
 	if (regVal){
-		gpioSetValue(2,0,0);
+		// Top button
+
+		//clear the interrupt
 		gpioIntClear(1,8);
 	}
 	return;
