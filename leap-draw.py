@@ -17,6 +17,7 @@ class DrawListener(Leap.Listener):
         self.file = open(self.filename+'.obj', 'w')
         self.file.write('o ' + self.filename + '\n')
         self.count = 0
+        self.x_avg = self.y_avg = self.z_avg = 0
         self.verticies = []
         print "Initialized"
 
@@ -26,8 +27,23 @@ class DrawListener(Leap.Listener):
     def on_disconnect(self, controller):
         print "Disconnected"
 
+    def sum_things(self, point):
+        new_vector = Leap.Vector()
+        new_vector.x = point.x + self.x_avg
+        new_vector.y = point.y + self.y_avg
+        new_vector.z = point.z + self.z_avg
+        return new_vector
+
     def on_exit(self, controller):
         print "Exited"
+        for vertex in self.verticies:
+            self.x_avg += vertex.x
+            self.y_avg += vertex.y
+            self.z_avg += vertex.z
+        self.x_avg /= self.count
+        self.y_avg /= self.count
+        self.z_avg /= self.count
+        self.vertices = map(self.sum_things, self.verticies)
         for vertex in self.verticies:
             self.file.write("v " +  str(vertex.x + self.w/2) + " " + str(self.h-vertex.y) + " " + str(vertex.z) + "\n")
         self.file.write('s off\n')
@@ -35,6 +51,7 @@ class DrawListener(Leap.Listener):
             self.file.write("f " + str(x+1) +  " " + str((x+1)%self.count + 1) + " " + str((x+2)%self.count + 1) + " " +  str((x+3)%self.count + 1)+"\n")
         self.file.close()
         subprocess.call(['ruby', 'objToStl.rb', self.filename + '.obj', 'STLs/'+ self.filename + '.stl'])
+        subprocess.call(['ruby', 'stlScale.rb', 'STLs/'+ self.filename + '.stl', 'STLs/'+ self.filename + '.stl'])
 
     def on_frame(self, controller):
         frame = controller.frame()
@@ -47,7 +64,7 @@ class DrawListener(Leap.Listener):
             tip = finger.tip_position
             self.location = tip
             self.location.x += self.w/2
-            self.verticies.append(tip)
+            self.verticies.append(self.location)
             self.count += 1
             self.drawn = True
 
