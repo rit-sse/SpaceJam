@@ -15,7 +15,6 @@ class DrawListener(Leap.Listener):
         filename = raw_input('What would you like to call this?')
         self.file = open(filename+'.obj', 'w')
         self.file.write('o ' + filename + '\n')
-        # self.window = pygame.display.set_mode((self.w, self.h))
         self.count = 0
         self.verticies = []
         print "Initialized"
@@ -44,19 +43,55 @@ class DrawListener(Leap.Listener):
         if numFingers > 0:
             finger = fingers.rightmost
             tip = finger.tip_position
-            print str(abs(self.location.x - tip.x - self.w/2)) + " " + str(abs(self.location.y - tip.y))
-            if not self.drawn or (abs(self.location.x - tip.x - self.w/2) < 25 and abs(self.location.y - tip.y) < 25):
-                self.location = tip
-                self.location.x += self.w/2
-                self.verticies.append(self.location)
-                self.count += 1
-                self.drawn = True
-        # pygame.display.flip()
+            # print str(abs(self.location.x - tip.x - self.w/2)) + " " + str(abs(self.location.y - tip.y))
+            # if not self.drawn or (abs(self.location.x - tip.x - self.w/2) < 50 and abs(self.location.y - tip.y) < 50):
+            self.location = tip
+            self.location.x += self.w/2
+            self.verticies.append(self.location)
+            self.count += 1
+            self.drawn = True
 
 listener = DrawListener()
 controller = Leap.Controller()
 win = pyglet.window.Window(1680, 1050)
 
+def hsv_to_rgb(h, s, v):
+    i = 0
+    f, p, q, t = 0, 0, 0, 0
+    if s == 0:
+        r = g = b = v
+        return
+    h /= 60.0
+    i = math.floor(h)
+    f = h - i
+    p = v * ( 1 - s )
+    q = v * ( 1 - s * f )
+    t = v * ( 1 - s * ( 1 - f ) )
+    if i == 0:
+        r = v
+        g = t
+        b = p
+    elif i == 1:
+        r = q
+        g = v
+        b = p
+    elif i == 2:
+        r = p
+        g = v
+        b = t
+    elif i == 3:
+        r = p
+        g = q
+        b = v
+    elif i == 4:
+        r = t
+        g = p
+        b = v
+    else:
+        r = v
+        g = p
+        b = q
+    return [r, g, b]
 @win.event
 def on_draw():
     # Clear buffers
@@ -69,6 +104,10 @@ def on_draw():
     # Draw some stuff
     glBegin(GL_LINE_STRIP)
     for vertex in listener.verticies:
+        new_z = vertex.z + 300
+        color = math.floor(new_z/2)
+        rgb = hsv_to_rgb(color, 1, 1)
+        glColor3d(rgb[0], rgb[1], rgb[2])
         glVertex2d(vertex.x, vertex.y)
     glEnd()
 
