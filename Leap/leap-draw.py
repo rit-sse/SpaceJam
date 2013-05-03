@@ -47,8 +47,8 @@ class DrawListener(Leap.Listener):
         for x in range(0,self.count-4):
             self.file.write("f " + str(x+1) +  " " + str((x+1)%self.count + 1) + " " + str((x+2)%self.count + 1) + " " +  str((x+3)%self.count + 1)+"\n")
         self.file.close()
-        subprocess.call(['ruby', '../CodeScrap/3dModifications/objToStl.rb', self.filename + '.obj', '../STLs/'+ self.filename + '.stl'])
-        subprocess.call(['ruby', '../CodeScrap/3dModifications/stlScale.rb', '../STLs/'+ self.filename + '.stl', '../STLs/'+ self.filename + '.stl'])
+        subprocess.call(['ruby', '../objToStl.rb', self.filename + '.obj', '../STLs/'+ self.filename + '.stl'])
+        subprocess.call(['ruby', '../stlScale.rb', '../STLs/'+ self.filename + '.stl', '../STLs/'+ self.filename + '.stl'])
 
     def on_frame(self, controller):
         frame = controller.frame()
