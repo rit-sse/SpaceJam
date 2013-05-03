@@ -43,6 +43,7 @@
 #include "core/gpio/gpio.h"
 #include "core/cpu/cpu.h"
 #include "core/timer16/timer16.h"
+#include "core/timer32/timer32.h"
 #include "core/systick/systick.h"
 
 #ifdef CFG_INTERFACE
@@ -57,6 +58,8 @@
 /**************************************************************************/
 
 uint16_t trigger;
+extern volatile uint32_t timer32_1_counter;
+uint32_t counterLast;
 
 void setup(){
 	  // Configure cpu and mandatory peripherals
@@ -69,7 +72,11 @@ void setup(){
 	  timer16Enable(0);
 
 	  // set start interval
-	  trigger = 626;
+	  trigger = 500;
+
+	  // set counter
+	  timer32Init(1, 72);
+	  timer32Enable(1);
 
 	  // Setup gpio
 	  gpioInit();
@@ -94,14 +101,14 @@ void setup(){
 			  	  	   gpioInterruptEvent_ActiveHigh);
 	  gpioIntEnable(1,8);
 
-	  gpioSetDir(0,6, gpioDirection_Input);
+	  gpioSetDir(2,1, gpioDirection_Input);
 	  //gpioSetPullup(&IOCON_PIO1_8, gpioPullupMode_Inactive);
-	  gpioSetInterrupt(0,
-			  	  	   6,
+	  gpioSetInterrupt(2,
+			  	  	   1,
 			  	  	   gpioInterruptSense_Edge,
 			  	  	   gpioInterruptEdge_Single,
 			  	  	   gpioInterruptEvent_ActiveHigh);
-	  gpioIntEnable(0,6);
+	  gpioIntEnable(2,1);
 }
 
 int main(void)
@@ -140,14 +147,19 @@ void PIOINT1_IRQHandler(void){
 }
 
 // IRQ Handler for GPIO Port 0
-void PIOINT0_IRQHandler(void){
+void PIOINT2_IRQHandler(void){
 	uint32_t regVal;
 
 	//Check if we're pin0.6
-	regVal = gpioIntStatus(0, 6);
+	regVal = gpioIntStatus(2, 1);
 	if (regVal){
 		//Do stuff here for the motor
-		gpioIntClear(0, 6);
+		uint32_t time = timer32_1_counter;
+		trigger = (time - counterLast) / 12;
+		counterLast = time;
+
+		// Clear
+		gpioIntClear(2,1);
 	}
 	return;
 }
