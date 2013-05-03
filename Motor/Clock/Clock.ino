@@ -31,7 +31,7 @@ void loop() {
 
 void recievedClock() {
   interval = micros() - fullRotation;
-  interval = (interval / 12);
+  interval = (interval / 12) - 1.8;
   fullRotation = micros();
 }
 
