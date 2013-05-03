@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 MichaelTimbrook. All rights reserved.
 //
 
-varying vec4 colorVarying;
+uniform vec4 color;
 
 void main()
 {
-    gl_FragColor = colorVarying;
+    gl_FragColor = color;
 }

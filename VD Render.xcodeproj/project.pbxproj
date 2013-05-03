@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C197FB1172E2562000E18E3 /* CreateBMP.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C197FB0172E2562000E18E3 /* CreateBMP.m */; };
+		4C7D540C17330CBB0070E8A2 /* ImportSTL.c in Sources */ = {isa = PBXBuildFile; fileRef = 4C7D540B17330CBB0070E8A2 /* ImportSTL.c */; };
 		4CBC6F4A1729D9A900552A87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBC6F491729D9A900552A87 /* Cocoa.framework */; };
 		4CBC6F541729D9A900552A87 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4CBC6F521729D9A900552A87 /* InfoPlist.strings */; };
 		4CBC6F561729D9A900552A87 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC6F551729D9A900552A87 /* main.m */; };
@@ -16,11 +18,15 @@
 		4CBC6F671729D9B300552A87 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBC6F661729D9B300552A87 /* OpenGL.framework */; };
 		4CBC6F691729D9BE00552A87 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CBC6F681729D9BE00552A87 /* GLKit.framework */; };
 		4CBC6F6C1729D9FD00552A87 /* RenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC6F6B1729D9FD00552A87 /* RenderView.m */; };
-		4CBC6F6F172A568700552A87 /* VDShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC6F6D172A568700552A87 /* VDShader.vsh */; };
-		4CBC6F70172A568700552A87 /* Shader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 4CBC6F6E172A568700552A87 /* Shader.fsh */; };
+		4CEEC5221732C9D500907819 /* stl2tri.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CEEC51F1732895F00907819 /* stl2tri.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C0708EC172B7603002188C8 /* NormalShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = NormalShader.vsh; sourceTree = "<group>"; };
+		4C197FAF172E2562000E18E3 /* CreateBMP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateBMP.h; sourceTree = "<group>"; };
+		4C197FB0172E2562000E18E3 /* CreateBMP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateBMP.m; sourceTree = "<group>"; };
+		4C7D540B17330CBB0070E8A2 /* ImportSTL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ImportSTL.c; sourceTree = "<group>"; };
+		4C7D540D173310E40070E8A2 /* ImportSTL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImportSTL.h; sourceTree = "<group>"; };
 		4CBC6F461729D9A900552A87 /* VD Render.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VD Render.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CBC6F491729D9A900552A87 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4CBC6F4C1729D9A900552A87 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -39,8 +45,9 @@
 		4CBC6F6A1729D9FD00552A87 /* RenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderView.h; sourceTree = "<group>"; };
 		4CBC6F6B1729D9FD00552A87 /* RenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderView.m; sourceTree = "<group>"; };
 		4CBC6F6D172A568700552A87 /* VDShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = VDShader.vsh; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
-		4CBC6F6E172A568700552A87 /* Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.fsh; sourceTree = "<group>"; };
-		4CBC6F71172A667600552A87 /* shuttle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shuttle.h; sourceTree = "<group>"; };
+		4CBC6F6E172A568700552A87 /* Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Shader.fsh; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.glsl; };
+		4CEEC51F1732895F00907819 /* stl2tri.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stl2tri.c; sourceTree = "<group>"; };
+		4CEEC5211732C49500907819 /* stl2tri.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stl2tri.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,13 +105,20 @@
 		4CBC6F4F1729D9A900552A87 /* VD Render */ = {
 			isa = PBXGroup;
 			children = (
+				4CBC6F551729D9A900552A87 /* main.m */,
+				4CEEC5211732C49500907819 /* stl2tri.h */,
+				4CEEC51F1732895F00907819 /* stl2tri.c */,
+				4C7D540D173310E40070E8A2 /* ImportSTL.h */,
+				4C7D540B17330CBB0070E8A2 /* ImportSTL.c */,
+				4C0708EC172B7603002188C8 /* NormalShader.vsh */,
 				4CBC6F6D172A568700552A87 /* VDShader.vsh */,
 				4CBC6F6E172A568700552A87 /* Shader.fsh */,
-				4CBC6F71172A667600552A87 /* shuttle.h */,
 				4CBC6F5B1729D9A900552A87 /* AppDelegate.h */,
 				4CBC6F5C1729D9A900552A87 /* AppDelegate.m */,
 				4CBC6F6A1729D9FD00552A87 /* RenderView.h */,
 				4CBC6F6B1729D9FD00552A87 /* RenderView.m */,
+				4C197FAF172E2562000E18E3 /* CreateBMP.h */,
+				4C197FB0172E2562000E18E3 /* CreateBMP.m */,
 				4CBC6F5E1729D9A900552A87 /* MainMenu.xib */,
 				4CBC6F501729D9A900552A87 /* Supporting Files */,
 			);
@@ -116,7 +130,6 @@
 			children = (
 				4CBC6F511729D9A900552A87 /* VD Render-Info.plist */,
 				4CBC6F521729D9A900552A87 /* InfoPlist.strings */,
-				4CBC6F551729D9A900552A87 /* main.m */,
 				4CBC6F571729D9A900552A87 /* VD Render-Prefix.pch */,
 				4CBC6F581729D9A900552A87 /* Credits.rtf */,
 			);
@@ -187,11 +200,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CEEC5221732C9D500907819 /* stl2tri.c in Sources */,
 				4CBC6F561729D9A900552A87 /* main.m in Sources */,
 				4CBC6F5D1729D9A900552A87 /* AppDelegate.m in Sources */,
 				4CBC6F6C1729D9FD00552A87 /* RenderView.m in Sources */,
-				4CBC6F6F172A568700552A87 /* VDShader.vsh in Sources */,
-				4CBC6F70172A568700552A87 /* Shader.fsh in Sources */,
+				4C197FB1172E2562000E18E3 /* CreateBMP.m in Sources */,
+				4C7D540C17330CBB0070E8A2 /* ImportSTL.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +304,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VD Render/VD Render-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "VD Render/VD Render-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -302,6 +317,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VD Render/VD Render-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "VD Render/VD Render-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -327,6 +343,7 @@
 				4CBC6F651729D9A900552A87 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
