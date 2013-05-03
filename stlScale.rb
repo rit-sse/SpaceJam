@@ -11,7 +11,7 @@ class Vertex
 		Vertex.new(@x.abs,@y.abs,@z.abs)
 	end
 	
-	def scale(scale_factor)
+	def scale!(scale_factor)
 		@x = @x/scale_factor
 		@y = @y/scale_factor
 		@z = @z/scale_factor
@@ -48,7 +48,7 @@ end
 
 def scale_vertex_array!(vertex_arr, scale_factor)
 	vertex_arr.each do |vert|
-		vert = vert.scale(scale_factor)
+		vert = vert.scale!(scale_factor)
 	end
 end
 

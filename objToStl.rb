@@ -37,26 +37,25 @@ def stl_stlStr(faces_arr, vertex_arr)
 	stlStr = "solid object\n"
 	faces_arr.each do |face|
 		if face.length == 3	
-			stlStr = stlStr + "facet normal 0 0 0\nouter loop\n"
-			stlStr = stlStr + "vertex #{vertex_arr[face[0].to_i-1]}\n" # indexing for objs start at 1
-			stlStr = stlStr + "vertex #{vertex_arr[face[1].to_i-1]}\n"
-			stlStr = stlStr + "vertex #{vertex_arr[face[2].to_i-1]}\n"
-			stlStr = stlStr + "endloop\nendfacet\n"
-		end
-		if face.length == 4
-		stlStr = stlStr + "facet normal 0 0 0\nouter loop\n"
-			stlStr = stlStr + "vertex #{vertex_arr[face[0].to_i-1]}\n" # indexing for objs start at 1
-			stlStr = stlStr + "vertex #{vertex_arr[face[1].to_i-1]}\n"
-			stlStr = stlStr + "vertex #{vertex_arr[face[2].to_i-1]}\n"
-			stlStr = stlStr + "endloop\nendfacet\n"
-			stlStr = stlStr + "facet normal 0 0 0\nouter loop\n"
-			stlStr = stlStr + "vertex #{vertex_arr[face[0].to_i-1]}\n" # indexing for objs start at 1
-			stlStr = stlStr + "vertex #{vertex_arr[face[2].to_i-1]}\n"
-			stlStr = stlStr + "vertex #{vertex_arr[face[3].to_i-1]}\n"
-			stlStr = stlStr + "endloop\nendfacet\n"
+			stlStr.concat("facet normal 0 0 0\nouter loop\n")
+			stlStr.concat("vertex #{vertex_arr[face[0].to_i-1]}\n") # indexing for objs start at 1
+			stlStr.concat("vertex #{vertex_arr[face[1].to_i-1]}\n")
+			stlStr.concat("vertex #{vertex_arr[face[2].to_i-1]}\n")
+			stlStr.concat("endloop\nendfacet\n")
+		elsif face.length == 4
+		stlStr.concat("facet normal 0 0 0\nouter loop\n")
+			stlStr.concat("vertex #{vertex_arr[face[0].to_i-1]}\n") # indexing for objs start at 1
+			stlStr.concat("vertex #{vertex_arr[face[1].to_i-1]}\n")
+			stlStr.concat("vertex #{vertex_arr[face[2].to_i-1]}\n")
+			stlStr.concat("endloop\nendfacet\n")
+			stlStr.concat("facet normal 0 0 0\nouter loop\n")
+			stlStr.concat("vertex #{vertex_arr[face[0].to_i-1]}\n") # indexing for objs start at 1
+			stlStr.concat("vertex #{vertex_arr[face[2].to_i-1]}\n")
+			stlStr.concat("vertex #{vertex_arr[face[3].to_i-1]}\n")
+			stlStr.concat("endloop\nendfacet\n")
 		end
 	end
-	stlStr = stlStr + "endsolid object"
+	stlStr.concat("endsolid object")
 	return stlStr
 end
 
