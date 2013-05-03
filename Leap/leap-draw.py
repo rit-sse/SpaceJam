@@ -25,9 +25,9 @@ class DrawListener(Leap.Listener):
 
     def sum_things(self, point):
         new_vector = Leap.Vector()
-        new_vector.x = point.x + self.x_avg
-        new_vector.y = point.y + self.y_avg
-        new_vector.z = point.z + self.z_avg
+        new_vector.x = point.x - self.x_avg
+        new_vector.y = point.y - self.y_avg
+        new_vector.z = point.z - self.z_avg
         return new_vector
 
     def on_exit(self, controller):
@@ -40,7 +40,7 @@ class DrawListener(Leap.Listener):
         self.x_avg /= self.count
         self.y_avg /= self.count
         self.z_avg /= self.count
-        self.vertices = map(self.sum_things, self.verticies)
+        self.verticies = map(self.sum_things, self.verticies)
         it = self.count
         for x in range(0,it):
             vertex = self.verticies[x]
