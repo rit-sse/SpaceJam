@@ -1,26 +1,25 @@
 class Vertex
 	attr_accessor :x, :y, :z
-  attr_reader :x, :y, :z
 	def initialize(x,y,z)
 		@x = x.to_f
 		@y = y.to_f
 		@z = z.to_f
 	end
-	
+
 	def absolute
 		Vertex.new(@x.abs,@y.abs,@z.abs)
 	end
-	
+
 	def scale!(scale_factor)
 		@x = @x/scale_factor
 		@y = @y/scale_factor
 		@z = @z/scale_factor
 	end
-	
+
 	def max
 		[@x,@y,@z].max
 	end
-	
+
 	def to_s
 		"#{@x} #{@y} #{@z}"
 	end

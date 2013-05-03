@@ -6,7 +6,7 @@ class Vertex
 		@y = y.to_f
 		@z = z.to_f
 	end
-	
+
 	def to_s
 		"#{@x} #{@y} #{@z}"
 	end
@@ -36,7 +36,7 @@ end
 def stl_stlStr(faces_arr, vertex_arr)
 	stlStr = "solid object\n"
 	faces_arr.each do |face|
-		if face.length == 3	
+		if face.length == 3
 			stlStr.concat("facet normal 0 0 0\nouter loop\n")
 			stlStr.concat("vertex #{vertex_arr[face[0].to_i-1]}\n") # indexing for objs start at 1
 			stlStr.concat("vertex #{vertex_arr[face[1].to_i-1]}\n")

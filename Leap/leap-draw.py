@@ -10,9 +10,8 @@ class DrawListener(Leap.Listener):
         self.cursor = Leap.Vector()
         self.w = 800
         self.h = 800
-        self.filename = raw_input('What would you like to call this?')
-        self.file = open(self.filename+'.obj', 'w')
-        self.file.write('o ' + self.filename + '\n')
+        self.file = open('drawing.obj', 'w')
+        self.file.write('o ' + 'Drawing\n')
         self.count = 0
         self.x_avg = self.y_avg = self.z_avg = 0
         self.verticies = []
@@ -47,8 +46,8 @@ class DrawListener(Leap.Listener):
         for x in range(0,self.count-4):
             self.file.write("f " + str(x+1) +  " " + str((x+1)%self.count + 1) + " " + str((x+2)%self.count + 1) + " " +  str((x+3)%self.count + 1)+"\n")
         self.file.close()
-        subprocess.call(['ruby', '../objToStl.rb', self.filename + '.obj', '../STLs/'+ self.filename + '.stl'])
-        subprocess.call(['ruby', '../stlScale.rb', '../STLs/'+ self.filename + '.stl', '../STLs/'+ self.filename + '.stl'])
+        subprocess.call(['ruby', '../3dModifications/objToStl.rb', 'drawing.obj', '../STLs/'+ 'drawing.stl'])
+        subprocess.call(['ruby', '../3dModifications/stlScale.rb', '../STLs/'+ 'drawing.stl', '../STLs/'+ 'drawing.stl'])
 
     def on_frame(self, controller):
         frame = controller.frame()
