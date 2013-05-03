@@ -3,14 +3,11 @@ from pyglet.gl import *
 from pyglet.gl.glu import *
 from pyglet.window import key
 
-
-
 class DrawListener(Leap.Listener):
 
     def on_init(self, controller):
         self.location = Leap.Vector()
         self.cursor = Leap.Vector()
-        self.drawn = False
         self.w = 800
         self.h = 800
         self.filename = raw_input('What would you like to call this?')
@@ -50,8 +47,8 @@ class DrawListener(Leap.Listener):
         for x in range(0,self.count-4):
             self.file.write("f " + str(x+1) +  " " + str((x+1)%self.count + 1) + " " + str((x+2)%self.count + 1) + " " +  str((x+3)%self.count + 1)+"\n")
         self.file.close()
-        subprocess.call(['ruby', 'objToStl.rb', self.filename + '.obj', 'STLs/'+ self.filename + '.stl'])
-        subprocess.call(['ruby', 'stlScale.rb', 'STLs/'+ self.filename + '.stl', 'STLs/'+ self.filename + '.stl'])
+        subprocess.call(['ruby', '../objToStl.rb', self.filename + '.obj', '../STLs/'+ self.filename + '.stl'])
+        subprocess.call(['ruby', '../stlScale.rb', '../STLs/'+ self.filename + '.stl', '../STLs/'+ self.filename + '.stl'])
 
     def on_frame(self, controller):
         frame = controller.frame()
@@ -66,11 +63,6 @@ class DrawListener(Leap.Listener):
             self.location.x += self.w/2
             self.verticies.append(self.location)
             self.count += 1
-            self.drawn = True
-
-listener = DrawListener()
-controller = Leap.Controller()
-win = pyglet.window.Window(800 , 800)
 
 def hsv_to_rgb(h, s, v):
     i = 0
@@ -109,59 +101,42 @@ def hsv_to_rgb(h, s, v):
         g = p
         b = q
     return [r, g, b]
-@win.event
-def on_draw():
-    # Clear buffers
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    glEnable(GL_DEPTH_TEST)         # enable depth testing
-    # reset modelview matrix
-    glMatrixMode(GL_MODELVIEW)
-    glLoadIdentity()
-    glLineWidth(5)
-    # Draw some stuff
-    glBegin(GL_LINE_STRIP)
-    for vertex in listener.verticies:
-        new_z = vertex.z + 300
-        color = math.floor(new_z/2)
-        rgb = hsv_to_rgb(color, 1, 1)
-        glColor3d(rgb[0], rgb[1], rgb[2])
-        glVertex2d(vertex.x, vertex.y)
-    glEnd()
-
-def draw_circle(x, y, r, color=(1.0, 1.0, 1.0, 0.2)):
-    '''draws a circle of radius r centered at (x, y)'''
-    draw_ring(x, y, 0, r, color)
-
-def draw_ring(x, y, inner, outer, color=(1.0, 1.0, 1.0, 1.0)):
-    glPushMatrix()
-    glColor4f(*color)
-    glTranslatef(x, y, 0)
-    q = gluNewQuadric()
-    slices = min(360, 6*outer)
-    gluDisk(q, inner, outer, slices, 1)
-    glPopMatrix()
-
-@win.event
-def on_key_press(symbol, modifiers):
-    # Symbolic names:
-    if symbol == key.RETURN:
-        controller.remove_listener(listener)
-        pyglet.app.exit()
-        sys.exit()
 
 def update(dt):
      pass
 
-pyglet.clock.schedule_interval(update, 1/60.0)
-
-
 def main():
-    # Create a sample listener and assign it to a controller to receive events
-    # pygame.init()
-
+    listener = DrawListener()
+    controller = Leap.Controller()
+    win = pyglet.window.Window(800 , 800)
+    @win.event
+    def on_draw():
+        # Clear buffers
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glEnable(GL_DEPTH_TEST)         # enable depth testing
+        # reset modelview matrix
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+        glLineWidth(5)
+        # Draw some stuff
+        glBegin(GL_LINE_STRIP)
+        for vertex in listener.verticies:
+            new_z = vertex.z + 300
+            color = math.floor(new_z/2)
+            rgb = hsv_to_rgb(color, 1, 1)
+            glColor3d(rgb[0], rgb[1], rgb[2])
+            glVertex2d(vertex.x, vertex.y)
+        glEnd()
+    @win.event
+    def on_key_press(symbol, modifiers):
+        # Symbolic names:
+        if symbol == key.RETURN:
+            controller.remove_listener(listener)
+            pyglet.app.exit()
+            sys.exit()
+    pyglet.clock.schedule_interval(update, 1/60.0)
     controller.add_listener(listener)
     pyglet.app.run()
 
-
-if __name__ == "__main__":
-  main()
+if __name__ == '__main__':
+    main()
