@@ -7,7 +7,6 @@ class DrawListener(Leap.Listener):
 
     def on_init(self, controller):
         self.location = Leap.Vector()
-        self.cursor = Leap.Vector()
         self.w = 800
         self.h = 800
         self.file = open('drawing.obj', 'w')
@@ -15,6 +14,7 @@ class DrawListener(Leap.Listener):
         self.count = 0
         self.x_avg = self.y_avg = self.z_avg = 0
         self.verticies = []
+        self.drawn = False
         print "Initialized"
 
     def on_connect(self, controller):
@@ -32,6 +32,7 @@ class DrawListener(Leap.Listener):
 
     def on_exit(self, controller):
         print "Exited"
+        pyglet.image.get_buffer_manager().get_color_buffer().save('../Preview/drawing.png')
         for vertex in self.verticies:
             self.x_avg += vertex.x
             self.y_avg += vertex.y
@@ -40,11 +41,21 @@ class DrawListener(Leap.Listener):
         self.y_avg /= self.count
         self.z_avg /= self.count
         self.vertices = map(self.sum_things, self.verticies)
-        for vertex in self.verticies:
-            self.file.write("v " +  str(vertex.x + self.w/2) + " " + str(self.h-vertex.y) + " " + str(vertex.z) + "\n")
+        it = self.count
+        for x in range(0,it):
+            vertex = self.verticies[x]
+            self.file.write("v " +  str(vertex.x) + " " + str(vertex.y) + " " + str(vertex.z) + "\n")
+            if x < it-1:
+                if abs(vertex.x - self.verticies[x+1].x) > 1 or abs(vertex.y - self.verticies[x+1].y) > 1:
+                    v = vertex
+                    while v.x < self.verticies[x+1].x or v.y < self.verticies[x+1].y:
+                        v.x += .5
+                        v.y += .5
+                        self.file.write("v " +  str(v.x) + " " + str(v.y) + " " + str(v.z) + "\n")
+                        self.count += 1
         self.file.write('s off\n')
         for x in range(0,self.count-4):
-            self.file.write("f " + str(x+1) +  " " + str((x+1)%self.count + 1) + " " + str((x+2)%self.count + 1) + " " +  str((x+3)%self.count + 1)+"\n")
+            self.file.write("f " + str(x+1) +  " " + str((x+2)%self.count + 1) + " " + str((x+1)%self.count + 1)  + " " +  str((x+3)%self.count + 1)+"\n")
         self.file.close()
         subprocess.call(['ruby', '../3dModifications/objToStl.rb', 'drawing.obj', '../STLs/'+ 'drawing.stl'])
         subprocess.call(['ruby', '../3dModifications/stlScale.rb', '../STLs/'+ 'drawing.stl', '../STLs/'+ 'drawing.stl'])
@@ -62,6 +73,18 @@ class DrawListener(Leap.Listener):
             self.location.x += self.w/2
             self.verticies.append(self.location)
             self.count += 1
+            self.drawn = True
+
+def frange(s,e=None,S=None):
+    if e==None:e=s;s=0.0
+    if S==None:S=1.0
+    L=[];n=s
+    if e>s:
+        while n<e:L.append(n);n+=S
+    elif e<s:
+        while n>e:L.append(n);n-=S
+    return L
+
 
 def hsv_to_rgb(h, s, v):
     i = 0
@@ -120,10 +143,10 @@ def main():
         # Draw some stuff
         glBegin(GL_LINE_STRIP)
         for vertex in listener.verticies:
-            new_z = vertex.z + 300
-            color = math.floor(new_z/2)
-            rgb = hsv_to_rgb(color, 1, 1)
-            glColor3d(rgb[0], rgb[1], rgb[2])
+            # new_z = vertex.z + 300
+            # color = math.floor(new_z/2)
+            # rgb = hsv_to_rgb(color, 1, 1)
+            # glColor3d(rgb[0], rgb[1], rgb[2])
             glVertex2d(vertex.x, vertex.y)
         glEnd()
     @win.event
