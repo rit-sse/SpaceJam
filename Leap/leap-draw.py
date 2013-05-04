@@ -9,7 +9,7 @@ class DrawListener(Leap.Listener):
         self.location = Leap.Vector()
         self.w = 800
         self.h = 800
-        self.file = open('drawing.obj', 'w')
+        self.file = open('../OBJs/drawing.obj', 'w')
         self.faces = []
         self.thickness = 10
         self.file.write('o ' + 'Drawing\n')
@@ -125,7 +125,7 @@ class DrawListener(Leap.Listener):
         print str(self.verticies[0].x) + " " + str(self.verticies[0].y) + " " + str(self.verticies[0].z)
         print str(self.verticies[1].x) + " " + str(self.verticies[1].y) + " " + str(self.verticies[1].z)
         self.file.close()
-        subprocess.call(['ruby', '../3dModifications/objToStl.rb', 'drawing.obj', '../STLs/'+ 'drawing.stl'])
+        subprocess.call(['ruby', '../3dModifications/objToStl.rb', '../OBJs/drawing.obj', '../STLs/'+ 'drawing.stl'])
         subprocess.call(['ruby', '../3dModifications/stlScale.rb', '../STLs/'+ 'drawing.stl', '../STLs/'+ 'drawing.stl'])
 
     def on_frame(self, controller):

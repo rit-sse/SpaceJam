@@ -28,7 +28,7 @@ uploadButton.grid(row=1, column=1)
 
 def leapCall():
 	# Call Kristen's super awesome leap code
-	#subprocess.call(['python', 'leap-draw.py'])
+	subprocess.call(['python', 'leap-draw.py'])
 
 	pass
 	
