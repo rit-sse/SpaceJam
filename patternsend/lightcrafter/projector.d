@@ -29,7 +29,7 @@ class Projector {
 	 *
 	 * closes the socket connection
 	 */
-    ~this() {
+    void close() {
         socket.close();
     }
 
@@ -39,7 +39,8 @@ class Projector {
 	 * 
 	 */
 	void start(){
-	  sendCommand( Command.START_PATTERN_SEQUENCE, [0x1] );  
+      ubyte[] payload = [0x1];
+	  sendCommand( Command.START_PATTERN_SEQUENCE, payload );
 	}
 
    
@@ -47,7 +48,8 @@ class Projector {
 	 * tell the lightcrafter to stop the pattern sequence
 	 */
 	void stop(){
-	  sendCommand( Command.START_PATTERN_SEQUENCE, [0x0] );
+      ubyte[] payload = [0x0];
+	  sendCommand( Command.START_PATTERN_SEQUENCE, payload );
 	}
   
     
@@ -71,12 +73,12 @@ class Projector {
             0x01,       // bit depth
             0x60, 0x00, // number of images (1-96)
             0x00,       // no inverted images
-            0x01,       // auto advance
+            0x02,       // positive trigger
             0x00, 0x00, 0x00, 0x00,     // trigger delay
             0x00, 0x00, 0x00, 0x00,     // trigger period
             0x00, 0x00, 0x00, 0x00,     // exposure time
-            0x02,        // blue is best color
-            0x01,        // display the pattern in a loop
+            0x01,        // green color
+            0x00,        // wait until the trigger to continue
             0x00         // the documentation lies - we need 20 bytes.  Not sure what for
         ];
 
@@ -107,10 +109,6 @@ class Projector {
 		 loadFrame(filename, curImage);
          curImage++;
 	  }
-
-
-
-
 
 	}
 

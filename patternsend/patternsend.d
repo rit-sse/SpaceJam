@@ -1,5 +1,6 @@
 
 import std.stdio;
+import core.thread;
 
 import lightcrafter.projector;
 import lightcrafter.constants;
@@ -21,9 +22,10 @@ int main(string[] args) {
 
     // Connect to the projector and load the patten settings
     Projector lightcrafter = new Projector();
-    lightcrafter.loadTestPatternSettings();
-
     writeln("connected to projector");
+
+    lightcrafter.loadTestPatternSettings();
+    writeln("settings loaded");
 
     // Load the requested sequence into the projector
     writeln("sending pattern sequence");
@@ -33,6 +35,10 @@ int main(string[] args) {
     writeln("showing pattern sequence");
     lightcrafter.setDisplayMode(DisplayMode.PATTERN_SEQUENCE);
     lightcrafter.start();
+
+    Thread.sleep(dur!("msecs")(400));
+
+    lightcrafter.close();
 
     return 0;
 }
