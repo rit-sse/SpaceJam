@@ -57,7 +57,7 @@ def uploadImage(event=None):
 	subprocess.call(['./objrender', "../OBJs/" + currentSelection])
 
 	# Call the conversion script to create 1 bit images
-	subprocess.call(['ruby', "folderToBmps.rb", "output"])
+	#subprocess.call(['ruby', "folderToBmps.rb", "output"])
 
 	#Call Sean and Lee's super awesome D code
 	# os.exists?

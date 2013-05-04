@@ -61,7 +61,12 @@ void initOpenGL(void)
     glEnable(GL_DEPTH_TEST); 
     glEnable(GL_CULL_FACE);
     glClearColor(0.0, 0.0, 0.0, 1.0);
-	
+	glEnable(GL_CULL_FACE);
+    glHint(GL_POLYGON_SMOOTH, GL_NICEST);
+    glEnable(GL_POLYGON_SMOOTH);
+    glHint(GL_LINE_SMOOTH, GL_NICEST);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_MULTISAMPLE_ARB);
 }
 
 
@@ -112,7 +117,7 @@ void calcRotation(void)
     glm::mat4 projectionMatrix = glm::perspective(60.0f, aspect, 0.1f, 100.0f);
 
     glm::mat4 baseModelViewMatrix = glm::translate(glm::mat4(1.0f),
-            glm::vec3(0.0f, 0.0f, -4.0f));
+            glm::vec3(0.0f, 0.0f, -6.0f));
     baseModelViewMatrix = glm::rotate(baseModelViewMatrix,
             _rotation, glm::vec3(0.0f, 0.0f, 1.0f));
     baseModelViewMatrix = glm::rotate(baseModelViewMatrix,
@@ -175,14 +180,20 @@ void drawFrame(void)
     float rot_sin = sin(_rotation * M_PI / 180.0f);
     glUniform4f(uniforms[UNIFORM_MIRROR_NORMAL], rot_sin, 1.0f, rot_cos, 0.0f); // Mirror Normal
     glUniform4f(uniforms[UNIFORM_PROJECTOR_REFLEXTION], -rot_sin * _projectorDistance, 1.0f,
-            -rot_cos * _projectorDistance, 0.0f); // reflected projector
+            -rot_cos * _projectorDistance, 0.0f); // reflected projector position P’
 
-    // position P’
+
+    // Draw in fill mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonOffset(0.0, 0.0);
+    glUniform4f(uniforms[UNIFORM_COLOR], 0.0f, 0.0f, 0.0f, 1.0f);
+    glDrawElements(GL_TRIANGLES, mesh->NumFaces() * 3,
+			GL_UNSIGNED_SHORT, (void *)0);
+
+    // Draw in wireframe mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glLineWidth(2.0f);
+    glPolygonOffset(2.0, 2.0);
     glUniform4f(uniforms[UNIFORM_COLOR], 1.0f, 1.0f, 1.0f, 1.0f);
-
-	// Draw the elements
     glDrawElements(GL_TRIANGLES, mesh->NumFaces() * 3,
 			GL_UNSIGNED_SHORT, (void *)0);
 
