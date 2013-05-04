@@ -38,9 +38,6 @@ def loadImage(event=None):
 	preview = "../Preview/"+preview[:-4]
 	preview += ".gif"
 	print(preview)
-	#if !file.exists(preview):
-	if False:
-		preview = "../Preview/noImage.gif"
 	photo = Tkinter.PhotoImage(file=preview)
 	
 	imgLabel.configure(image=photo)

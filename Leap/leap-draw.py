@@ -102,7 +102,7 @@ class DrawListener(Leap.Listener):
 
     def on_exit(self, controller):
         print "Exited"
-        pyglet.image.get_buffer_manager().get_color_buffer().save('../Preview/drawing.png')
+        pyglet.image.get_buffer_manager().get_color_buffer().save('../Preview/drawing.gif')
         for vertex in self.verticies:
             self.x_avg += vertex.x
             self.y_avg += vertex.y
