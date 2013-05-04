@@ -15,8 +15,10 @@ class DrawListener(Leap.Listener):
         self.file.write('o ' + 'Drawing\n')
         self.count = 0
         self.count_better = 0
+        self.count_normals = 0
         self.x_avg = self.y_avg = self.z_avg = 0
         self.verticies = []
+        self.vector_normals = []
         self.drawn = False
         print "Initialized"
 
@@ -37,6 +39,7 @@ class DrawListener(Leap.Listener):
         x1, y1, z1 = vertex1.x, vertex1.y, vertex1.z
         x2, y2, z2 = vertex2.x, vertex2.y, vertex2.z
         self.count_better += 3
+        self.count_normals += 6
 
         theta36 = math.atan((z2 - z1)/(x2-x1))
         theta47 = math.atan((x2 - x1)/(y2-y1))
@@ -68,14 +71,33 @@ class DrawListener(Leap.Listener):
         v6 = self.count_better + 1
         v7 = self.count_better + 2
         v8 = self.count_better + 3
-        if(do_faces):
-            self.faces.append("f " + str(v3) +  " " + str(v6)  + " " + str(v5) + "\n")
-            self.faces.append("f " + str(v6) +  " " + str(v5)  + " " + str(v8) + "\n")
-            self.faces.append("f " + str(v5) +  " " + str(v8)  + " " + str(v4) + "\n")
-            self.faces.append("f " + str(v8) +  " " + str(v4)  + " " + str(v7) + "\n")
-            self.faces.append("f " + str(v4) +  " " + str(v7)  + " " + str(v3) + "\n")
-            self.faces.append("f " + str(v7) +  " " + str(v3)  + " " + str(v6) + "\n")
 
+        n3 = self.count_better - 5
+        n4 = self.count_better - 4
+        n5 = self.count_better - 3
+        n6 = self.count_better - 2
+        n7 = self.count_better - 1
+        n8 = self.count_better
+
+        if(do_faces):
+            normal3 = vertex1 - vertex3
+            normal4 = vertex1 - vertex4
+            normal5 = vertex1 - vertex5
+
+            self.vector_normals.append("vn " + str(normal4.x) + " "+ str(normal4.y) + " " + str(normal4.z) + "\n" )
+            self.vector_normals.append("vn " + str(normal4.x) + " "+ str(normal4.y) + " " + str(normal4.z) + "\n" )
+            self.vector_normals.append("vn " + str(normal3.x) + " "+ str(normal3.y) + " " + str(normal3.z) + "\n" )
+            self.vector_normals.append("vn " + str(normal3.x) + " "+ str(normal3.y) + " " + str(normal3.z) + "\n" )
+            self.vector_normals.append("vn " + str(normal5.x) + " "+ str(normal5.y) + " " + str(normal5.z) + "\n" )
+            self.vector_normals.append("vn " + str(normal5.x) + " "+ str(normal5.y) + " " + str(normal5.z) + "\n" )
+
+
+            self.faces.append("f " + str(v3) + "//" + str(n3) +  " " + str(v6)  + "//" + str(n3) + " " + str(v5) + "//" + str(n3) + "\n")
+            self.faces.append("f " + str(v6) + "//" + str(n4) +  " " + str(v5)  + "//" + str(n4) + " " + str(v8) + "//" + str(n4) + "\n")
+            self.faces.append("f " + str(v5) + "//" + str(n5) +  " " + str(v8)  + "//" + str(n5) + " " + str(v4) + "//" + str(n5) + "\n")
+            self.faces.append("f " + str(v8) + "//" + str(n6) +  " " + str(v4)  + "//" + str(n6) + " " + str(v7) + "//" + str(n6) + "\n")
+            self.faces.append("f " + str(v4) + "//" + str(n7) +  " " + str(v7)  + "//" + str(n7) + " " + str(v3) + "//" + str(n7) + "\n")
+            self.faces.append("f " + str(v7) + "//" + str(n8) +  " " + str(v3)  + "//" + str(n8) + " " + str(v6) + "//" + str(n8) + "\n")
 
 
     def on_exit(self, controller):
@@ -96,6 +118,8 @@ class DrawListener(Leap.Listener):
             else:
                 self.math_stuff(self.verticies[i], self.verticies[i+1], True)
         self.file.write('s off\n')
+        for normal in self.vector_normals:
+            self.file.write(normal)
         for face in self.faces:
             self.file.write(face)
         print str(self.verticies[0].x) + " " + str(self.verticies[0].y) + " " + str(self.verticies[0].z)
