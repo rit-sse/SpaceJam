@@ -10,8 +10,11 @@ class DrawListener(Leap.Listener):
         self.w = 800
         self.h = 800
         self.file = open('drawing.obj', 'w')
+        self.faces = []
+        self.thickness = 10
         self.file.write('o ' + 'Drawing\n')
         self.count = 0
+        self.count_better = 0
         self.x_avg = self.y_avg = self.z_avg = 0
         self.verticies = []
         self.drawn = False
@@ -30,6 +33,54 @@ class DrawListener(Leap.Listener):
         new_vector.z = point.z - self.z_avg
         return new_vector
 
+    def math_stuff(self, vertex1, vertex2, do_faces):
+        x1, y1, z1 = vertex1.x, vertex1.y, vertex1.z
+        x2, y2, z2 = vertex2.x, vertex2.y, vertex2.z
+        self.count_better += 3
+
+        theta36 = math.atan((z2 - z1)/(x2-x1))
+        theta47 = math.atan((x2 - x1)/(y2-y1))
+        theta58 = math.atan((y2 - y1)/(z2-z1))
+
+        vertex3 = Leap.Vector()
+        vertex4 = Leap.Vector()
+        vertex5 = Leap.Vector()
+
+        vertex3.x = self.thickness*math.sin(theta36) + x1
+        vertex4.x = x2
+        vertex5.x = self.thickness*math.cos(theta58) + x1
+
+        vertex3.y = self.thickness*math.cos(theta36) + y1
+        vertex4.y = self.thickness*math.sin(theta47) + y1
+        vertex5.y = y2
+
+        vertex3.z = z2
+        vertex4.z = self.thickness*math.cos(theta47) + z1
+        vertex5.z = self.thickness*math.sin(theta58) + z1
+
+        self.file.write("v " +  str(vertex3.x) + " " + str(vertex3.y) + " " + str(vertex3.z) + "\n")
+        self.file.write("v " +  str(vertex4.x) + " " + str(vertex4.y) + " " + str(vertex4.z) + "\n")
+        self.file.write("v " +  str(vertex5.x) + " " + str(vertex5.y) + " " + str(vertex5.z) + "\n")
+
+        if(do_faces):
+            v3 = self.count_better - 2
+            v4 = self.count_better - 1
+            v5 = self.count_better
+            v6 = self.count_better + 1
+            v7 = self.count_better + 2
+            v8 = self.count_better + 3
+
+            self.faces.append("f " + str(v3) +  " " + str(v4)  + " " + str(v5) + "\n")
+            self.faces.append("f " + str(v6) +  " " + str(v7)  + " " + str(v8) + "\n")
+            self.faces.append("f " + str(v3) +  " " + str(v6)  + " " + str(v5) + "\n")
+            self.faces.append("f " + str(v6) +  " " + str(v5)  + " " + str(v8) + "\n")
+            self.faces.append("f " + str(v5) +  " " + str(v8)  + " " + str(v4) + "\n")
+            self.faces.append("f " + str(v8) +  " " + str(v4)  + " " + str(v7) + "\n")
+            self.faces.append("f " + str(v4) +  " " + str(v7)  + " " + str(v3) + "\n")
+            self.faces.append("f " + str(v7) +  " " + str(v3)  + " " + str(v6) + "\n")
+
+
+
     def on_exit(self, controller):
         print "Exited"
         pyglet.image.get_buffer_manager().get_color_buffer().save('../Preview/drawing.png')
@@ -42,19 +93,19 @@ class DrawListener(Leap.Listener):
         self.z_avg /= self.count
         self.verticies = map(self.sum_things, self.verticies)
         it = self.count
-        for vertex in self.verticies:
-            self.file.write("v " +  str(vertex.x) + " " + str(vertex.y) + " " + str(vertex.z) + "\n")
+        for i in range(0, self.count-1):
+            if i == self.count-2:
+                self.math_stuff(self.verticies[i], self.verticies[i+1], False)
+            else:
+                self.math_stuff(self.verticies[i], self.verticies[i+1], True)
         self.file.write('s off\n')
-        for x in range(0,self.count-4):
-            self.file.write("f " + str(x+1) +  " " + str((x+2)%self.count + 1) + " " + str((x+1)%self.count + 1)  + " " +  str((x+3)%self.count + 1)+"\n")
+        for face in self.faces:
+            self.file.write(face)
+        print str(self.verticies[0].x) + " " + str(self.verticies[0].y) + " " + str(self.verticies[0].z)
+        print str(self.verticies[1].x) + " " + str(self.verticies[1].y) + " " + str(self.verticies[1].z)
         self.file.close()
         subprocess.call(['ruby', '../3dModifications/objToStl.rb', 'drawing.obj', '../STLs/'+ 'drawing.stl'])
         subprocess.call(['ruby', '../3dModifications/stlScale.rb', '../STLs/'+ 'drawing.stl', '../STLs/'+ 'drawing.stl'])
-
-    def math_stuff(vertex1, vertex2):
-        x1, y1, z1 = vertex1.x, vertex1.y, vertex1.z
-        x2, y2, z2 = vertex2.x, vertex2.y, vertex2.z
-        theta3 = math.pi/2 - math.atan((z2 - z1)/(x2-x1))
 
     def on_frame(self, controller):
         frame = controller.frame()
