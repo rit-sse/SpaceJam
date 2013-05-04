@@ -65,7 +65,7 @@ void initOpenGL(void)
 }
 
 
-void loadResources(void)
+void loadResources(char *objFile)
 {
     // Load the shaders
     _program = setUpAShader((char *)"shaders/VDShader.vsh", (char *)"shaders/Shader.fsh");
@@ -85,7 +85,7 @@ void loadResources(void)
     uniforms[UNIFORM_COLOR] = glGetUniformLocation(_program, "color");
 
     // Load in the object to render
-    mesh = importOBJ("OBJs/ship.obj");
+    mesh = importOBJ(objFile);
 
 	// Generate the opengl buffers
 	glGenBuffers(1, &vertBuffer);
@@ -95,12 +95,11 @@ void loadResources(void)
     glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData) * mesh->NumVerticies(),
 			mesh->Verticies(), GL_STATIC_DRAW);
-    
+
     // Set up the element buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Face) * mesh->NumFaces(),
 			mesh->Faces(), GL_STATIC_DRAW);
-
 }
 
 
@@ -215,25 +214,35 @@ void display(void)
 }
 
 
+void printUsage(void)
+{
+    printf("usage: objrender <obj file>\n\
+            \tTakes an obj file and renders it as a lightcrafter pattern\n\
+            \tsequence. Output is placed in the output directory");
+}
+
 int main(int argc, char **argv)
 {
+    if (argc < 2) {
+        printUsage();
+        return 1;
+    }
+
     glutInit(&argc, argv);
 
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     glutCreateWindow("Volumetric Display");
-    
+
 #ifndef __APPLE__
     glewInit();
 #endif
-    
 
     initOpenGL();
-    loadResources();
+    loadResources(argv[1]);
     calcRotation();
-    
+
     glutDisplayFunc(display);
-    
     glutMainLoop();
 
     return 0;
