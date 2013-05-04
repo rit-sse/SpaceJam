@@ -1,6 +1,7 @@
-all: projector.o shell.o constants.o patternsend.o 
+all: projector.o shell.o constants.o patternsend.o writebits.o
 	dmd constants.o projector.o shell.o -ofshell.out
 	dmd constants.o projector.o patternsend.o -ofpatternsend
+
 
 
 constants.o: lightcrafter/constants.d
@@ -30,8 +31,14 @@ clean:
 
 
 
+writebits.o: writebits.c
+	g++ -c writebits.c
+	g++ writebits.o lib/libfreeimage.a
+
+
 docs: all
 	dmd -D -c shell.d
 	dmd -D -c lightcrafter/constants.d
 	dmd -D -c lightcrafter/projector.d
 	mv *.html docs/
+
