@@ -13,12 +13,14 @@ class Vertex
 end
 
 def stlToObj(fileIn,fileOut)
-	vertex_arr = []
+	vertex_arr = {}
 	File.readlines(fileIn).each do |line|
 		lineSplit = line.split()
+		count = 0
 		if line[0] == 'v'
 			if lineSplit.length == 4
-				vertex_arr += [Vertex.new(lineSplit[1],lineSplit[2],lineSplit[3])]
+				count = count + 1
+				vertex_arr[count] = [Vertex.new(lineSplit[1],lineSplit[2],lineSplit[3])]
 			end
 		end
 	end
