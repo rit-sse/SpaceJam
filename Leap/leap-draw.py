@@ -62,16 +62,13 @@ class DrawListener(Leap.Listener):
         self.file.write("v " +  str(vertex4.x) + " " + str(vertex4.y) + " " + str(vertex4.z) + "\n")
         self.file.write("v " +  str(vertex5.x) + " " + str(vertex5.y) + " " + str(vertex5.z) + "\n")
 
+        v3 = self.count_better - 2
+        v4 = self.count_better - 1
+        v5 = self.count_better
+        v6 = self.count_better + 1
+        v7 = self.count_better + 2
+        v8 = self.count_better + 3
         if(do_faces):
-            v3 = self.count_better - 2
-            v4 = self.count_better - 1
-            v5 = self.count_better
-            v6 = self.count_better + 1
-            v7 = self.count_better + 2
-            v8 = self.count_better + 3
-
-            self.faces.append("f " + str(v3) +  " " + str(v4)  + " " + str(v5) + "\n")
-            self.faces.append("f " + str(v6) +  " " + str(v7)  + " " + str(v8) + "\n")
             self.faces.append("f " + str(v3) +  " " + str(v6)  + " " + str(v5) + "\n")
             self.faces.append("f " + str(v6) +  " " + str(v5)  + " " + str(v8) + "\n")
             self.faces.append("f " + str(v5) +  " " + str(v8)  + " " + str(v4) + "\n")
