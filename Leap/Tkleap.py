@@ -38,8 +38,11 @@ def loadImage(event=None):
 	preview = "../Preview/"+preview[:-4]
 	preview += ".gif"
 	print(preview)
+	#if !file.exists(preview):
+	if False:
+		preview = "../Preview/noImage.gif"
 	photo = Tkinter.PhotoImage(file=preview)
-	#imgLabel.config(image=photo)
+	
 	imgLabel.configure(image=photo)
 	imgLabel.image = photo #need to keep a reference
 	print(stlBox.get(stlBox.curselection()))
