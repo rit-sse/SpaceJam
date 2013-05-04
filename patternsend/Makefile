@@ -1,6 +1,6 @@
 all: projector.o shell.o constants.o patternsend.o 
 	dmd constants.o projector.o shell.o -ofshell.out
-	dmd constants.o projector.o patternsend.o bmpfile.o -ofpatternsend
+	dmd constants.o projector.o patternsend.o -ofpatternsend
 
 
 constants.o: lightcrafter/constants.d
@@ -15,10 +15,6 @@ patternsend.o: patternsend.d
    
 shell.o: shell.d	
 	dmd shell.d -c
-
-
-bmpencoder.o: bmpencoder.d
-	dmd bmpencoder.d bmpfile.o -unittest
 
 
 projector.test.o:
