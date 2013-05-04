@@ -93,16 +93,16 @@ class DrawListener(Leap.Listener):
 
 
             self.faces.append("f " + str(v3) + "//" + str(n3) +  " " + str(v6)  + "//" + str(n3) + " " + str(v5) + "//" + str(n3) + "\n")
-            self.faces.append("f " + str(v6) + "//" + str(n4) +  " " + str(v5)  + "//" + str(n4) + " " + str(v8) + "//" + str(n4) + "\n")
+            self.faces.append("f " + str(v6) + "//" + str(n4) +  " " + str(v8)  + "//" + str(n4) + " " + str(v5) + "//" + str(n4) + "\n")
             self.faces.append("f " + str(v5) + "//" + str(n5) +  " " + str(v8)  + "//" + str(n5) + " " + str(v4) + "//" + str(n5) + "\n")
-            self.faces.append("f " + str(v8) + "//" + str(n6) +  " " + str(v4)  + "//" + str(n6) + " " + str(v7) + "//" + str(n6) + "\n")
+            self.faces.append("f " + str(v8) + "//" + str(n6) +  " " + str(v7)  + "//" + str(n6) + " " + str(v4) + "//" + str(n6) + "\n")
             self.faces.append("f " + str(v4) + "//" + str(n7) +  " " + str(v7)  + "//" + str(n7) + " " + str(v3) + "//" + str(n7) + "\n")
-            self.faces.append("f " + str(v7) + "//" + str(n8) +  " " + str(v3)  + "//" + str(n8) + " " + str(v6) + "//" + str(n8) + "\n")
+            self.faces.append("f " + str(v7) + "//" + str(n8) +  " " + str(v6) +  "//" + str(n8) + " " + str(v3) + "//" + str(n8) + "\n")
 
 
     def on_exit(self, controller):
         print "Exited"
-        pyglet.image.get_buffer_manager().get_color_buffer().save('../Preview/drawing.png')
+        pyglet.image.get_buffer_manager().get_color_buffer().save('../Preview/drawing.gif')
         for vertex in self.verticies:
             self.x_avg += vertex.x
             self.y_avg += vertex.y
