@@ -42,23 +42,19 @@ class DrawListener(Leap.Listener):
         self.z_avg /= self.count
         self.verticies = map(self.sum_things, self.verticies)
         it = self.count
-        for x in range(0,it):
-            vertex = self.verticies[x]
+        for vertex in self.verticies:
             self.file.write("v " +  str(vertex.x) + " " + str(vertex.y) + " " + str(vertex.z) + "\n")
-            if x < it-1:
-                if abs(vertex.x - self.verticies[x+1].x) > 1 or abs(vertex.y - self.verticies[x+1].y) > 1:
-                    v = vertex
-                    while v.x < self.verticies[x+1].x or v.y < self.verticies[x+1].y:
-                        v.x += .5
-                        v.y += .5
-                        self.file.write("v " +  str(v.x) + " " + str(v.y) + " " + str(v.z) + "\n")
-                        self.count += 1
         self.file.write('s off\n')
         for x in range(0,self.count-4):
             self.file.write("f " + str(x+1) +  " " + str((x+2)%self.count + 1) + " " + str((x+1)%self.count + 1)  + " " +  str((x+3)%self.count + 1)+"\n")
         self.file.close()
         subprocess.call(['ruby', '../3dModifications/objToStl.rb', 'drawing.obj', '../STLs/'+ 'drawing.stl'])
         subprocess.call(['ruby', '../3dModifications/stlScale.rb', '../STLs/'+ 'drawing.stl', '../STLs/'+ 'drawing.stl'])
+
+    def math_stuff(vertex1, vertex2):
+        x1, y1, z1 = vertex1.x, vertex1.y, vertex1.z
+        x2, y2, z2 = vertex2.x, vertex2.y, vertex2.z
+        theta3 = math.pi/2 - math.atan((z2 - z1)/(x2-x1))
 
     def on_frame(self, controller):
         frame = controller.frame()
@@ -74,16 +70,6 @@ class DrawListener(Leap.Listener):
             self.verticies.append(self.location)
             self.count += 1
             self.drawn = True
-
-def frange(s,e=None,S=None):
-    if e==None:e=s;s=0.0
-    if S==None:S=1.0
-    L=[];n=s
-    if e>s:
-        while n<e:L.append(n);n+=S
-    elif e<s:
-        while n>e:L.append(n);n-=S
-    return L
 
 
 def hsv_to_rgb(h, s, v):
