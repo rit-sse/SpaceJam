@@ -58,8 +58,10 @@
 /**************************************************************************/
 
 uint16_t trigger;
+int offset;
 extern volatile uint32_t timer32_1_counter;
 uint32_t counterLast;
+uint32_t wait;
 
 void setup(){
 	  // Configure cpu and mandatory peripherals
@@ -73,6 +75,7 @@ void setup(){
 
 	  // set start interval
 	  trigger = 500;
+	  offset = 0;
 
 	  // set counter
 	  timer32Init(1, 72);
@@ -84,22 +87,22 @@ void setup(){
 	  gpioSetValue(2,0,0);
 
 	  // Setup an interrupt
+	  gpioSetDir(3,0, gpioDirection_Input);
+	  //gpioSetPullup(&IOCON_PIO1_8, gpioPullupMode_Inactive);
+	  gpioSetInterrupt(3,
+			  	  	   0,
+			  	  	   gpioInterruptSense_Edge,
+			  	  	   gpioInterruptEdge_Single,
+			  	  	   gpioInterruptEvent_ActiveLow);
+	  gpioIntEnable(3,0);
 	  gpioSetDir(1,5, gpioDirection_Input);
 	  //gpioSetPullup(&IOCON_PIO1_8, gpioPullupMode_Inactive);
 	  gpioSetInterrupt(1,
 			  	  	   5,
 			  	  	   gpioInterruptSense_Edge,
 			  	  	   gpioInterruptEdge_Single,
-			  	  	   gpioInterruptEvent_ActiveHigh);
+			  	  	   gpioInterruptEvent_ActiveLow);
 	  gpioIntEnable(1,5);
-	  gpioSetDir(1,8, gpioDirection_Input);
-	  //gpioSetPullup(&IOCON_PIO1_8, gpioPullupMode_Inactive);
-	  gpioSetInterrupt(1,
-			  	  	   8,
-			  	  	   gpioInterruptSense_Edge,
-			  	  	   gpioInterruptEdge_Single,
-			  	  	   gpioInterruptEvent_ActiveHigh);
-	  gpioIntEnable(1,8);
 
 	  gpioSetDir(2,1, gpioDirection_Input);
 	  //gpioSetPullup(&IOCON_PIO1_8, gpioPullupMode_Inactive);
@@ -116,40 +119,50 @@ int main(void)
 	setup();
 
 	while (1){
-	  timer16DelayUS(0, trigger);
+	  timer16DelayUS(0, (trigger - 50) + offset);
 	  gpioSetValue(2,0,1);
+	  timer16DelayUS(0,50);
 	  gpioSetValue(2,0,0);
 	}
-
 	return 0;
 }
 
 // IRQ Handler for GPIO Port 1
 void PIOINT1_IRQHandler(void){
 	uint32_t regVal;
-
-	//Check if we're pin1.5
 	regVal = gpioIntStatus(1, 5);
 	if (regVal){
-		// Bottom button
-
-		//clear the interrupt
-		gpioIntClear(1, 5);
-	}
-	regVal = gpioIntStatus(1, 8);
-	if (regVal){
 		// Top button
-
-		//clear the interrupt
-		gpioIntClear(1,8);
+		if (timer32_1_counter - 500 > wait) {
+			wait = timer32_1_counter;
+			offset = offset - 1;
+			//clear the interrupt
+			gpioIntClear(1,5);
+		}
 	}
+	return;
+}
+
+void PIOINT3_IRQHandler(void){
+	uint32_t regVal;
+	//Check if we're pin1.5
+	regVal = gpioIntStatus(3, 0);
+	if (regVal){
+		// Bottom button
+		if (timer32_1_counter - 500 > wait) {
+			wait = timer32_1_counter;
+			offset = offset + 1;
+			//clear the interrupt
+		}
+		gpioIntClear(3, 0);
+	}
+
 	return;
 }
 
 // IRQ Handler for GPIO Port 0
 void PIOINT2_IRQHandler(void){
 	uint32_t regVal;
-
 	//Check if we're pin0.6
 	regVal = gpioIntStatus(2, 1);
 	if (regVal){
